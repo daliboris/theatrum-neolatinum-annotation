@@ -35,12 +35,12 @@ declare function rapi:entry($request as map(*)) {
 declare function rapi:delete($request as map(*)) {
     let $id := xmldb:decode($request?parameters?id)
     let $type := xmldb:decode($request?parameters?type)
-    let $entry := collection($config:register-root)/id($id)
+    let $entry := rapi:update-point($type, $id) (: collection($config:register-root)/id($id) :)
 
     return
       if ($entry) then
             (: let $del := xmldb:remove(util:collection-name($doc), util:document-name($doc)) :)
-            let $foo := 'bar'
+            let $del := update delete $entry
 
             return (
                 session:set-attribute($config:session-prefix || ".works", ()),
@@ -60,11 +60,21 @@ declare function rapi:save($request as map(*)) {
     let $body := $request?body/*[1]
 
     let $type := local-name($body)
-    let $type := if ($type = 'org') then "organization" else $type
+    let $type := if ($type = 'org') 
+        then "organization" 
+        else if($type = 'item') 
+            then "gloss" 
+            else $type
+
     let $id := ($body/@xml:id, $request?parameters?id)[1]
 
     let $data := rapi:prepare-record($body, $user, $type)
-    let $record := rapi:insert-point($type)/id($id)
+    (: check if the entity with given id already exists :)
+    let $record := rapi:update-point($type, $id)
+    let $record := if(exists($record)) then 
+            $record
+        else
+            rapi:insert-point($type)/id($id)
 
     return
         if ($record) then
@@ -78,14 +88,42 @@ declare function rapi:save($request as map(*)) {
                     map {"status": "created"})
 };
 
+
 declare function rapi:add-entry($record, $type) {
+    let $id := $record/@xml:id
     let $target := rapi:insert-point($type)
+    let $update := update insert $record into $target
+    (: some newly added records are not indexed, the must be updated to be indexed :)
+    (: let $record := $target/id($id) :)
+    (: let $update := rapi:replace-entry($record, $record) :)
+    (: reindexing is available only for dba users :)
+    (: let $reindex := xmldb:reindex($config:register-root, $file-name) :)
     return
-        update insert $record into $target
+        $update
+    (:
+    if (sm:has-access(xs:anyURI(document-uri(root($target))), "w")) then
+        (
+            update insert $record into $target,
+            map {
+                "status": "created"
+            }
+        ) else
+            error($errors:FORBIDDEN, "Permission denied")
+    :)
 };
 
 declare function rapi:replace-entry($record, $data) {
         update replace $record with $data
+    (:
+    if (sm:has-access(xs:anyURI(document-uri(root($target))), "w")) then
+        (
+            update replace $record with $data,
+            map {
+                "status": "updated"
+            }
+        ) else
+            error($errors:FORBIDDEN, "Permission denied")
+    :)
 };
 
 (:~
@@ -93,16 +131,30 @@ declare function rapi:replace-entry($record, $data) {
  :)
 declare function rapi:insert-point($type as xs:string) {
     let $root := $config:register-map?($type)?id
+    let $collection := collection($config:register-root)/id($root)
     return 
     switch ($type)
         case "place" return
-            collection($config:register-root)/id($root)//tei:listPlace
+            $collection//tei:listPlace
         case "organization" return
-            collection($config:register-root)/id($root)//tei:listOrg
+            $collection//tei:listOrg
         case "term" return
-            collection($config:register-root)/id($root)//tei:taxonomy
+            $collection//tei:taxonomy
+        case "gloss" return
+            $collection//tei:list[@type="glossary"]
         default return
-            collection($config:register-root)/id($root)//tei:listPerson
+            $collection//tei:listPerson[@xml:id='pb-persons-annotation']
+};
+
+(:~
+ : Return existing local authority record if it exists, otherwise return empty sequence.
+ :)
+declare function rapi:update-point($type as xs:string, $id as xs:string) { 
+let $root := $config:register-map?($type)?id
+let $collection := collection($config:register-root)/id($root)
+return if(exists($collection))
+    then $collection/id($id)
+    else ()
 };
 
 (: Adjust content of a register entry coming from the editing form
@@ -115,6 +167,28 @@ declare function rapi:prepare-record($node as item()*, $resp, $type) {
 
     let $id := if ($node/@xml:id=$new) then rapi:next($type) else $node/@xml:id
 
+    let $elements-to-change := ("person", "place", "item")
+    let $element-name := if($node instance of element()) then local-name($node) else ()
+
+    return if($element-name = $elements-to-change) then
+        element {node-name($node)} {
+                    (: copy attributes :)
+                    for $att in $node/@* except ($node/@xml:id, $node/@resp, $node/@when)
+                    return
+                        $att
+                    ,
+                    attribute xml:id {$id}
+                    ,
+                    attribute when {format-date(current-date(), '[Y]-[M,2]-[D,2]')}
+                    ,
+                    attribute resp {$resp}
+                    ,
+                    for $child in $node/node()
+                    return $child
+                }
+        else
+            $node
+(:
     return
       typeswitch($node)
         case element(tei:person) 
@@ -154,7 +228,7 @@ declare function rapi:prepare-record($node as item()*, $resp, $type) {
         (: all the rest pass it through :)
         default 
             return $node
-
+:)
 };
 
 (:~ 
@@ -171,10 +245,12 @@ declare function rapi:next($type) {
     switch ($type)
         case 'place'
             return collection($config:register-root)/id($config?id)//tei:place[starts-with(@xml:id, $config?prefix)]/substring-after(@xml:id, $config?prefix)
+        case "gloss"
+            return collection($config:register-root)/id($config?id)//tei:item[starts-with(@xml:id, $config?prefix)]/substring-after(@xml:id, $config?prefix)
         default 
             return collection($config:register-root)/id($config?id)//tei:person[starts-with(@xml:id, $config?prefix)]/substring-after(@xml:id, $config?prefix)
     
-    let $last := if (count($all-ids)) then sort($all-ids)[last()] else 1
+    let $last := if (count($all-ids)) then sort($all-ids)[last()] else 0 (: 1 :)
     let $next :=
             try {
                 xs:integer($last) + 1
@@ -250,6 +326,25 @@ declare function rapi:query($type as xs:string, $query as xs:string?) {
                         "id": $term/@xml:id/string(),
                         "label": $term/tei:catDesc/string()
                     }
+            case "gloss" return
+                for $item in collection($config:register-root)//tei:item[ft:query(tei:label, $query)]
+                    let $variants := 
+                    if(exists($item/tei:label[@type='variant'][. != '']))
+                        then
+                        string-join($item/tei:label[@type='variant']/data(), ', ') ! concat('(var. ', . , ')')
+                        else 
+                        ()
+                    let $definitions := string-join(
+                    for $gloss in $item/tei:gloss 
+                        return if($gloss/data() != '') then $gloss else ()
+                        , ' / ')
+                return
+                    map {
+                    "id": $item/@xml:id/string(),
+                    "label": $item/tei:label[@type="main"]/string(),
+                    "details": ``[`{$variants}`; `{$definitions}`; `{$item/tei:note/string()}`]``,
+                    "link": $item/tei:ptr/@target/string()
+                    }                    
             default return
                 ()
     } catch * {
@@ -379,6 +474,7 @@ declare function rapi:local-search-strings($type as xs:string, $entry as element
         case "place" return $entry/tei:placeName/string()
         case "organization" return $entry/tei:orgName/string()
         case "term" return $entry/tei:catDesc/string()
+        case "gloss" return $entry/tei:label/string()
         default return $entry/tei:persName/string()
 };
 
