@@ -28,7 +28,6 @@
     <target name="prepare">
         <mkdir dir="${build.dir}" />
         <mkdir dir="${app.build.dir}" />
-
         <copy todir="${app.build.dir}/resources/scripts">
             <fileset dir="${scripts.dir}">
                 <include name="*.js"/>
@@ -56,18 +55,18 @@
     </target>
     <target name="xar-local" depends="npm.install,prepare,xar"/>
     <target name="xar" depends="prepare-xar,fix">
-        <mkdir dir="${build.dir}"/>
-        <mkdir dir="${app.build.dir}" />
         <zip basedir="${app.build.dir}" destfile="${build.dir}/${project.app}-${project.version}.xar">
         </zip>
         <copy file="${build.dir}/${project.app}-${project.version}.xar" overwrite="true" tofile="${build.dir}/${project.app}.xar"/>
     </target>
     <target name="prepare-xar">
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${app.build.dir}" />
         <copy todir="${app.build.dir}">
             <fileset dir="${basedir}">
                 <exclude name="node_modules/**"/>
                 <exclude name="${build.dir}/**"/>
-                <exclude name=".gihub/**"/>
+                <exclude name=".github/**"/>
                 <exclude name="*local*"/>
                 <exclude name="*.code-workspace"/>
                 <exclude name="*build.properties"/>
