@@ -1,0 +1,13 @@
+<meta xmlns="http://exist-db.org/xquery/repo">
+    <description>Theatrum Neolatinum Annotation</description>
+    <author>Boris Lehečka</author>
+    <status>beta</status>
+    <license>GNU-LGPL</license>
+    <copyright>true</copyright>
+    <type>application</type>
+    <prepare>pre-install.xql</prepare>
+    <finish>post-install.xql</finish>
+    <target>tnlanno</target>
+    <permissions user="tnl" group="tei" mode="rw-r--r--"/>
+    <deployed>2024-05-01T12:37:37.021Z</deployed>
+</meta>
