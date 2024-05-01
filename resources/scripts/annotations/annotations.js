@@ -642,7 +642,8 @@ window.addEventListener("WebComponentsReady", () => {
 		if (trackHistory) {
 			document.dispatchEvent(new CustomEvent('pb-before-save', {
 				detail: {
-					user: currentUser
+					user: currentUser,
+					export: false
 				}
 			}));
 		} else {
