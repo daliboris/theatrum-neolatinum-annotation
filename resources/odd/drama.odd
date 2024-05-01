@@ -1,5 +1,11 @@
-<?xml-model href="teipublisher_odds.xsd"?><TEI xmlns="http://www.tei-c.org/ns/1.0" xmlns:pb="http://teipublisher.com/1.0" xml:lang="en"><teiHeader><fileDesc>
-            <titleStmt><title>Drama</title></titleStmt>
+<?xml-model href="teipublisher_odds.xsd"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0"
+    xmlns:pb="http://teipublisher.com/1.0" xml:lang="en">
+    <teiHeader>
+        <fileDesc>
+            <titleStmt>
+                <title>Drama</title>
+            </titleStmt>
             <publicationStmt>
                 <publisher>Ústav pro českou literaturu</publisher>
                 <availability>
@@ -22,109 +28,173 @@
                 </p>
                 <p>born digital</p>
             </sourceDesc>
-        </fileDesc><encodingDesc><tagsDecl><rendition source="drama.css"/></tagsDecl></encodingDesc><revisionDesc>
+        </fileDesc>
+        <encodingDesc>
+            <tagsDecl>
+                <rendition source="drama.css"/>
+            </tagsDecl>
+        </encodingDesc>
+        <revisionDesc>
             <change when="2023-11-27">Initial version</change>
-        </revisionDesc></teiHeader><text>
+        </revisionDesc>
+    </teiHeader>
+    <text>
         <body>
             <schemaSpec start="TEI teiCorpus" ident="drama" source="teipublisher.odd">
-                <elementSpec ident="persName" mode="add"><model predicate="parent::person" behaviour="inline"/><model predicate="@place" behaviour="note">
-            <param name="place" value="@place"/>
-            <param name="label" value="id(substring-after(@ref, '#'), root($parameters?root))"/>
-        </model><model behaviour="inline" cssClass="person"/></elementSpec>
-                <elementSpec ident="pb" mode="change"><modelSequence>
-            <model behaviour="inline">
-                <outputRendition xml:space="preserve" scope="after">
-                content: '|';
-                </outputRendition>
-            </model>
-            <model behaviour="break" cssClass="pb">
-                <param name="type" value="'page'"/>
-                <param name="label" value="@n"/>
-            </model>
-        </modelSequence></elementSpec>
-                <elementSpec ident="placeName" mode="add"><model predicate="ancestor::place" behaviour="link">
-            <param name="uri" value="ancestor::place/ptr/@target"/>
-            <param name="target" value="'_blank'"/>
-        </model><model behaviour="inline" cssClass="place"/></elementSpec>
-                <elementSpec ident="term" mode="add"><model behaviour="inline" cssClass="term"/></elementSpec>
-                <elementSpec ident="date" mode="change"><model behaviour="inline" cssClass="date"/></elementSpec>
-                <elementSpec ident="note" mode="change"><model predicate="@type='annotation'" behaviour="omit"/><model behaviour="note">
-            <param name="place" value="@place"/>
-            <param name="label" value="@n"/>
-        </model></elementSpec>
-                <elementSpec ident="orgName" mode="add"><model behaviour="inline" cssClass="organization"/></elementSpec>
-                <elementSpec ident="place" mode="add"><modelSequence>
-            <model behaviour="heading">
-                <param name="content" value="placeName[@type=&#34;full&#34;]"/>
-                <param name="level" value="3"/>
-            </model>
-            <model predicate="placeName[not(@type)]" behaviour="heading">
-                <param name="content" value="string-join(placeName[not(@type)]/string(), '; ')"/>
-                <param name="level" value="4"/>
-            </model>
-            <model behaviour="paragraph">
-                <param name="content" value="string-join((country, region), ', ')"/>
-            </model>
-            <model behaviour="block">
-                <param name="content" value="note/node()"/>
-            </model>
-        </modelSequence></elementSpec>
-                <elementSpec ident="rs" mode="change"><model predicate="@type='abbreviation'" behaviour="inline" cssClass="abbreviation"/><model behaviour="inline"/></elementSpec>
-                <elementSpec ident="person" mode="add"><modelSequence>
-            <model behaviour="heading">
-                <param name="content" value="persName[@type=&#34;full&#34;]"/>
-                <param name="level" value="3"/>
-            </model>
-            <model behaviour="block">
-                <param name="content" value="string-join(occupation, ', ')"/>
-            </model>
-            <model behaviour="paragraph">
-                <param name="content" value="./note/node()"/>
-            </model>
-        </modelSequence></elementSpec>
-                <elementSpec ident="choice" mode="change"><model predicate="sic and corr" behaviour="pass-through">
-            <param name="sic" value="sic[1]/node()"/>
-            <param name="corr" value="corr[1]/node()"/>
-            <pb:template xmlns="" xml:space="preserve">
+                <elementSpec ident="persName" mode="add">
+                    <model predicate="parent::person" behaviour="inline"/>
+                    <model predicate="@place" behaviour="note">
+                        <param name="place" value="@place"/>
+                        <param name="label" value="id(substring-after(@ref, '#'), root($parameters?root))"/>
+                    </model>
+                    <model behaviour="inline" cssClass="person"/>
+                </elementSpec>
+                <elementSpec ident="pb" mode="change">
+                    <modelSequence>
+                        <model behaviour="inline">
+                            <outputRendition xml:space="preserve" scope="after">content: '|';</outputRendition>
+                        </model>
+                        <model behaviour="break" cssClass="pb">
+                            <param name="type" value="'page'"/>
+                            <param name="label" value="@n"/>
+                        </model>
+                    </modelSequence>
+                </elementSpec>
+                <elementSpec ident="placeName" mode="add">
+                    <model predicate="ancestor::place" behaviour="link">
+                        <param name="uri" value="ancestor::place/ptr/@target"/>
+                        <param name="target" value="'_blank'"/>
+                    </model>
+                    <model behaviour="inline" cssClass="place"/>
+                </elementSpec>
+                <elementSpec ident="term" mode="add">
+                    <model behaviour="inline" cssClass="term"/>
+                </elementSpec>
+                <elementSpec ident="date" mode="change">
+                    <model behaviour="inline" cssClass="date"/>
+                </elementSpec>
+                <elementSpec ident="note" mode="change">
+                    <model predicate="@type='annotation'" behaviour="omit"/>
+                    <model behaviour="note">
+                        <param name="place" value="@place"/>
+                        <param name="label" value="@n"/>
+                    </model>
+                </elementSpec>
+                <elementSpec ident="orgName" mode="add">
+                    <model behaviour="inline" cssClass="organization"/>
+                </elementSpec>
+                <elementSpec ident="place" mode="add">
+                    <modelSequence>
+                        <model behaviour="heading">
+                            <param name="content" value="placeName[@type=&#34;full&#34;]"/>
+                            <param name="level" value="3"/>
+                        </model>
+                        <model predicate="placeName[not(@type)]" behaviour="heading">
+                            <param name="content" value="string-join(placeName[not(@type)]/string(), '; ')"/>
+                            <param name="level" value="4"/>
+                        </model>
+                        <model behaviour="paragraph">
+                            <param name="content" value="string-join((country, region), ', ')"/>
+                        </model>
+                        <model behaviour="block">
+                            <param name="content" value="note/node()"/>
+                        </model>
+                    </modelSequence>
+                </elementSpec>
+
+                <elementSpec ident="item" mode="add">
+                    <modelSequence>
+                        <model behaviour="heading">
+                            <param name="content" value="label[@type=&#34;full&#34;]"/>
+                            <param name="level" value="3"/>
+                        </model>
+                        <model predicate="label[not(@type)]" behaviour="heading">
+                            <param name="content" value="string-join(label[not(@type)]/string(), '; ')"/>
+                            <param name="level" value="4"/>
+                        </model>
+                        <model behaviour="paragraph">
+                            <param name="content" value="string-join(gloss, ', ')"/>
+                        </model>
+                        <model behaviour="block">
+                            <param name="content" value="note/node()"/>
+                        </model>
+                    </modelSequence>
+                </elementSpec>
+
+                <elementSpec ident="rs" mode="change">
+                    <model predicate="@type='abbreviation'" behaviour="inline" cssClass="abbreviation"/>
+                    <model predicate="@type='gloss'" behaviour="inline" cssClass="gloss"/>
+                    <model behaviour="inline"/>
+                </elementSpec>
+                <elementSpec ident="person" mode="add">
+                    <modelSequence>
+                        <model behaviour="heading">
+                            <param name="content" value="persName[@type=&#34;full&#34;]"/>
+                            <param name="level" value="3"/>
+                        </model>
+                        <model behaviour="block">
+                            <param name="content" value="string-join(occupation, ', ')"/>
+                        </model>
+                        <model behaviour="paragraph">
+                            <param name="content" value="./note/node()"/>
+                        </model>
+                    </modelSequence>
+                </elementSpec>
+                <elementSpec ident="choice" mode="change">
+                    <model predicate="sic and corr" behaviour="pass-through">
+                        <param name="sic" value="sic[1]/node()"/>
+                        <param name="corr" value="corr[1]/node()"/>
+                        <pb:template xmlns="" xml:space="preserve">
                             <span class="annotation annotation-sic" data-type="sic" data-annotation="{{&#34;corr&#34;: &#34;[[corr]]&#34;}}">[[sic]]</span>
                         </pb:template>
-        </model><model predicate="abbr and expan" behaviour="pass-through">
-            <param name="expan" value="expan[1]/node()"/>
-            <param name="abbr" value="abbr[1]/node()"/>
-            <pb:template xmlns="" xml:space="preserve">
+                    </model>
+                    <model predicate="abbr and expan" behaviour="pass-through">
+                        <param name="expan" value="expan[1]/node()"/>
+                        <param name="abbr" value="abbr[1]/node()"/>
+                        <pb:template xmlns="" xml:space="preserve">
                             <span class="annotation annotation-sic" data-type="abbr" data-annotation="{{&#34;expan&#34;: &#34;[[expan]]&#34;}}">[[abbr]]</span>
                         </pb:template>
-        </model><model predicate="orig and reg" behaviour="pass-through">
-            <param name="reg" value="reg[1]/node()"/>
-            <param name="orig" value="orig[1]/node()"/>
-            <pb:template xmlns="" xml:space="preserve">
+                    </model>
+                    <model predicate="orig and reg" behaviour="pass-through">
+                        <param name="reg" value="reg[1]/node()"/>
+                        <param name="orig" value="orig[1]/node()"/>
+                        <pb:template xmlns="" xml:space="preserve">
                             <span class="annotation annotation-reg" data-type="reg" data-annotation="{{&#34;reg&#34;: &#34;[[reg]]&#34;}}">[[orig]]</span>
                         </pb:template>
-        </model></elementSpec>
+                    </model>
+                </elementSpec>
                 <elementSpec ident="corr" mode="change"/>
-                <elementSpec ident="hi" mode="change"><model behaviour="inline" cssClass="annotation annotation-hi" useSourceRendition="true"/></elementSpec>
-                <elementSpec ident="app" mode="add"><model behaviour="pass-through">
-            <param name="lem" value="lem[1]/node()"/>
-            <param name="rdg" value="string-join(  for $rdg at $p in ./rdg return (      '&#34;rdg[' || $p || ']&#34;:&#34;' || $rdg/string() || '&#34;',         '&#34;wit[' || $p || ']&#34;:&#34;' || $rdg/@wit/string() || '&#34;'     ),     ',' )"/>
-            <pb:template xmlns="" xml:space="preserve">
+                <elementSpec ident="hi" mode="change">
+                    <model behaviour="inline" cssClass="annotation annotation-hi" useSourceRendition="true"/>
+                </elementSpec>
+                <elementSpec ident="app" mode="add">
+                    <model behaviour="pass-through">
+                        <param name="lem" value="lem[1]/node()"/>
+                        <param name="rdg" value="string-join(  for $rdg at $p in ./rdg return (      '&#34;rdg[' || $p || ']&#34;:&#34;' || $rdg/string() || '&#34;',         '&#34;wit[' || $p || ']&#34;:&#34;' || $rdg/@wit/string() || '&#34;'     ),     ',' )"/>
+                        <pb:template xmlns="" xml:space="preserve">
                             <span class="annotation annotation-app" data-type="app" data-annotation="{{[[rdg]]}}">[[lem]]</span>
                         </pb:template>
-        </model></elementSpec>
-                <elementSpec ident="ref" mode="change"><model behaviour="inline" cssClass="annotation annotation-ref"/></elementSpec>
-                <elementSpec ident="l" mode="change"><model predicate="@n" behaviour="pass-through">
-            <param name="n" value="@n"/>
-            <param name="rend" value="@rend"/>
-            <pb:template xmlns="" xml:space="preserve">
+                    </model>
+                </elementSpec>
+                <elementSpec ident="ref" mode="change">
+                    <model behaviour="inline" cssClass="annotation annotation-ref"/>
+                </elementSpec>
+                <elementSpec ident="l" mode="change">
+                    <model predicate="@n" behaviour="pass-through">
+                        <param name="n" value="@n"/>
+                        <param name="rend" value="@rend"/>
+                        <pb:template xmlns="" xml:space="preserve">
                             <div class="tei-l">
                                 <span class="verse-number">[[n]]</span>
                                 <span class="verse [[rend]]">[[content]]</span>
                             </div>
                         </pb:template>
-        </model><model behaviour="block" useSourceRendition="true">
-            <outputRendition xml:space="preserve">
-            margin-left: 1em;
-            </outputRendition>
-        </model></elementSpec>
+                    </model>
+                    <model behaviour="block" useSourceRendition="true">
+                        <outputRendition xml:space="preserve">margin-left: 1em;</outputRendition>
+                    </model>
+                </elementSpec>
             </schemaSpec>
         </body>
-    </text></TEI>
+    </text>
+</TEI>
