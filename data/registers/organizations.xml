@@ -20,6 +20,6 @@
    </teiHeader>
    <standOff>
       <listOrg>
-      <org xml:id="gnd-510923-1"><orgName type="main">Antiquariat Theatrum</orgName><orgName type="sort">Antiquariat Theatrum</orgName><note/></org><org xml:id="gnd-10296373-3"><orgName type="main">Problem House</orgName><orgName type="sort">Problem House</orgName><note/></org></listOrg>
+      </listOrg>
    </standOff>
 </TEI>
