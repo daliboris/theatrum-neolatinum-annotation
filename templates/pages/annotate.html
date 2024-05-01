@@ -48,6 +48,7 @@
             <paper-icon-button class="annotation-action authority" data-i18n="[title]annotations.organisation" title="organization" data-type="organization" data-shortcut="⌘+⇧+o,ctrl+⇧+o" icon="social:people" disabled="disabled"/>
             <paper-icon-button class="annotation-action authority" data-i18n="[title]annotations.place" title="Place" data-type="place" icon="maps:place" data-shortcut="⌘+⇧+q,ctrl+⇧+q" disabled="disabled"/>
             <paper-icon-button class="annotation-action authority" data-i18n="[title]annotations.term" title="Term" data-type="term" icon="icons:bookmark" data-shortcut="⌘+⇧+t,ctrl+⇧+t" disabled="disabled"/>
+            <paper-icon-button class="annotation-action authority" data-i18n="[title]annotations.gloss" title="Gloss" data-type="gloss" icon="icons:label-outline" data-shortcut="⌘+⇧+s,ctrl+⇧+s" disabled="disabled"/>
             <paper-icon-button class="annotation-action" data-i18n="[title]annotations.date" title="Date" data-type="date" icon="icons:today" data-shortcut="⌘+⇧+d,ctrl+⇧+d" disabled="disabled"/>
             <paper-icon-button class="annotation-action" data-i18n="[title]annotations.ref" title="Reference" data-type="link" icon="icons:link" data-shortcut="⌘+⇧+l,ctrl+⇧+l" disabled="disabled"/>
             <paper-icon-button class="annotation-action" data-i18n="[title]annotations.abbreviation" title="Abbreviation" data-type="abbreviation" icon="icons:translate" data-shortcut="⌘+⇧+b,ctrl+⇧+b" disabled="disabled"/>
@@ -93,7 +94,7 @@
                             <commit>false</commit>
                             <markup>true</markup>
                             <authority-editor/>
-                            <authority-forms>person, place</authority-forms>
+                            <authority-forms>person, place, gloss</authority-forms>
                         </data>
                     </fx-instance>
                     <fx-instance id="i-commit">
@@ -153,7 +154,7 @@
                         <header>Annotation Details</header>
                         <iron-form id="edit-form">
                             <form action="">
-                                <div class="annotation-form person organization place term">
+                                <div class="annotation-form person organization place term gloss">
                                     <paper-input class="form-ref" name="ref" data-i18n="[label]annotations.reference" label="Reference"/>
                                     <div class="authority-info"><pb-i18n key="dialogs.loading">Loading ...</pb-i18n></div>
                                     <pb-restricted group="tei">
@@ -230,6 +231,9 @@
                         </pb-authority>
                         <pb-authority connector="GND" name="term" prefix="gnd"/>
                             <pb-authority connector="Custom" name="person" edit="">
+                            <pb-authority connector="GND" prefix="gnd"/>
+                        </pb-authority>
+                        <pb-authority connector="Custom" name="gloss" edit="edit">
                             <pb-authority connector="GND" prefix="gnd"/>
                         </pb-authority>
                     </pb-authority-lookup>
