@@ -1,0 +1,8 @@
+<list xmlns="http://www.tei-c.org/ns/1.0" xml:id="gloss-default">
+    <item xml:id="gloss-NEW">
+        <label type="main" />
+        <gloss xml:lang="cs" />
+        <gloss xml:lang="en" />
+        <note />
+    </item>
+</list>
