@@ -85,13 +85,10 @@ declare function idx:get-metadata($root as element(), $field as xs:string) {
 };
 
 declare function idx:get-genre($header as element()?) {
-    let $targets := $header//tei:textClass/tei:catRef[@scheme="#genre"]/@target
+    for $target in $header//tei:textClass/tei:catRef[@scheme="#genre"]/@target
+    let $category := id(substring($target, 2), doc($idx:app-root || "/data/taxonomy.xml"))
     return
-        array:for-each(array {$targets}, function($target) {
-            let $category := id(substring($target, 2), doc($idx:app-root || "/data/taxonomy.xml"))
-            return
         $category/ancestor-or-self::tei:category[parent::tei:category]/tei:catDesc
-        })
 };
 
 declare function idx:get-classification($header as element()?, $scheme as xs:string) {
