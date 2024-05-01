@@ -29,6 +29,8 @@ declare function anno:entity-type($node as element()) as xs:string? {
             "place"
         case element(tei:term) return
             "term"
+        case element(tei:rs) return if($node[@type="gloss"]) then 
+            "gloss" else ()
         case element(tei:orgName) return
             "organization"
         default return
@@ -102,6 +104,8 @@ declare function anno:annotations($type as xs:string, $properties as map(*)?, $c
             </pb>
         case "edit" return
             $properties?content
+        case "gloss" return
+            <rs xmlns="http://www.tei-c.org/ns/1.0" type="gloss" ref="{$properties?ref}">{$content()}</rs>
         default return
             $content()
 };
@@ -122,6 +126,8 @@ declare function anno:occurrences($type as xs:string, $key as xs:string) {
             collection($config:data-default)//tei:term[@ref = $key]
         case "organization" return
             collection($config:data-default)//tei:orgName[@ref = $key]
+        case "gloss" return
+            collection($config:data-default)//tei:rs[@type="gloss"][@ref = $key]
          default return ()
 };
 
