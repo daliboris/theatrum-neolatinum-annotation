@@ -15,6 +15,7 @@
         <fx-instance id="i-template" src="api/forms/template/organization-template" xpath-default-namespace="http://www.tei-c.org/ns/1.0">
             <data/>
         </fx-instance>
+        <fx-bind ref="@xml:id" readonly="string-length(getRef()) != 0" />
 
         <fx-submission id="load" method="GET" replace="instance">
             <fx-action event="submit-done">
@@ -77,6 +78,10 @@
                 <fx-output ref="@xml:id"/>
             </h2>
 
+            <fx-control ref="@xml:id">
+                <label>Organization ID</label>
+                <fx-hint>unique identifier</fx-hint>
+            </fx-control>
             <fx-control ref="orgName[@type='main']">
                 <label>Canonical form</label>
                 <fx-hint>The Beatles</fx-hint>
