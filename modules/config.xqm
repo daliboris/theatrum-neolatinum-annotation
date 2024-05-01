@@ -357,7 +357,7 @@ declare variable $config:register-map := map {
         "prefix": "place-"
     },
     "organization": map {
-        "id": "pb-organization",
+        "id": "pb-organizations",
         "default": "organization-default",
         "prefix": "org-"
     },
@@ -365,6 +365,11 @@ declare variable $config:register-map := map {
         "id": "pb-keywords",
         "default": "term-default",
         "prefix": "category-"
+    },
+    "gloss": map {
+        "id": "pb-glosses",
+        "default": "gloss-default",
+        "prefix": "gloss-"
     }
 };
 
