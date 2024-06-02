@@ -37,7 +37,9 @@
             </sourceDesc>
         </fileDesc>
         <encodingDesc>
-            <tagsDecl/>
+            <tagsDecl>
+                <rendition source="annotations.css"/>
+            </tagsDecl>
         </encodingDesc>
         <revisionDesc>
             <change when="2021-05-28+02:00">Initial version</change>
@@ -171,6 +173,21 @@
                 </elementSpec>
                 <elementSpec ident="ref" mode="change">
                     <model behaviour="inline" cssClass="annotation annotation-ref"/>
+                </elementSpec>
+                <elementSpec ident="l" mode="change">
+                    <model predicate="@n" behaviour="pass-through">
+                        <param name="n" value="@n"/>
+                        <param name="rend" value="@rend"/>
+                        <pb:template xmlns="" xml:space="preserve">
+                            <div class="tei-l">
+                                <span class="verse [[rend]]">[[content]]</span>
+                                <span class="verse-number">[[n]]</span>
+                            </div>
+                        </pb:template>
+                    </model>
+                    <model behaviour="block" useSourceRendition="true">
+                        <outputRendition xml:space="preserve">margin-left: 1em;</outputRendition>
+                    </model>
                 </elementSpec>
             </schemaSpec>
         </body>
