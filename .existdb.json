@@ -1,7 +1,7 @@
 {
     "servers": {
         "localhost": {
-            "server": "http://localhost:9380/exist",
+            "server": "http://localhost:8080/exist",
             "user": "admin",
             "password": "",
             "root": "/db/apps/tnlanno"
