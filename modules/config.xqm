@@ -19,7 +19,7 @@ declare namespace tei="http://www.tei-c.org/ns/1.0";
 
 (:~~
  : The version of the pb-components webcomponents library to be used by this app.
- : Should either point to a version published on npm,
+ : Should either point to a version published on npm, including 'latest',
  : or be set to 'local' or 'dev'. 
  : 
  : If set to 'local', webcomponents
