@@ -1,4 +1,4 @@
-<package xmlns="http://expath.org/ns/pkg" spec="1.0" version="0.2.0" name="http://theatrum-neolatinum.cz/ns/apps/annotations" abbrev="tnlanno">
+<package xmlns="http://expath.org/ns/pkg" spec="1.0" version="0.3.0" name="http://theatrum-neolatinum.cz/ns/apps/annotations" abbrev="tnlanno">
     <title>Theatrum Neolatinum Annotation</title>
     <dependency processor="http://exist-db.org" semver-min="5.3.0"/>
     <dependency package="http://exist-db.org/html-templating" semver="1"/>

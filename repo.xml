@@ -9,5 +9,14 @@
     <finish>post-install.xql</finish>
     <target>tnlanno</target>
     <permissions user="tnl" group="tei" mode="rw-r--r--"/>
-    <deployed>2024-05-01T12:37:37.021Z</deployed>
+    <deployed />
+    <change version="0.3.0">
+        <ul xmlns="http://www.w3.org/1999/xhtml">
+            <li>buttons for inserting Czech and English paragraphs in the toolbar of note editor</li>
+            <li>clean registry files (with no content)</li>
+            <li>developing on localhost port 8080</li>
+            <li>adding `&gt;p&gt;`, `&gt;ref&gt;`, and `&gt;hi&gt;` elements to the toolbar of note editor</li>
+            <li>ignoring local data (from Visual Studio and VS Code) for Github synchronization</li>
+        </ul>
+    </change>
 </meta>
