@@ -8,7 +8,7 @@
     <prepare>pre-install.xql</prepare>
     <finish>post-install.xql</finish>
     <target>tnlanno</target>
-    <permissions user="tnl" group="tei" mode="rw-r--r--"/>
+    <permissions user="tnl" group="tei" mode="rw-rw-r--"/>
     <deployed />
     <change version="0.3.0">
         <ul xmlns="http://www.w3.org/1999/xhtml">
