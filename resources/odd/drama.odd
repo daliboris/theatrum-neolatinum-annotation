@@ -184,9 +184,9 @@
                         <param name="n" value="@n"/>
                         <param name="rend" value="@rend"/>
                         <pb:template xmlns="" xml:space="preserve">
-                            <div class="tei-l">
-                                <span class="verse-number">[[n]]</span>
+                            <div class="tei-l [[rend]]">
                                 <span class="verse [[rend]]">[[content]]</span>
+                                <span class="verse-number">[[n]]</span>
                             </div>
                         </pb:template>
                     </model>
