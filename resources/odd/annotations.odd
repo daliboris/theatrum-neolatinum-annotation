@@ -163,7 +163,14 @@
                     <model behaviour="inline" cssClass="annotation annotation-hi" useSourceRendition="true"/>
                 </elementSpec>
                 <elementSpec ident="app" mode="add">
-                    <model behaviour="pass-through">
+                    <model predicate="note[cit | ref]" behaviour="pass-through">
+                        <param name="n" value="@n"/>
+                        <param name="text" value="string-join(  for $item at $p in ./note//*[not(*)] return (      '&#34;' || ($item/@type, local-name($item))[1] || '[' || $p || ']' || '&#34;:&#34;' || concat( if(exists($item/@subtype)) then ' (' || $item/@subtype || ') ' else (), $item/normalize-space()) || '&#34;'),     ',' )"/>
+                        <pb:template xmlns="" xml:space="preserve">
+                            <span class="annotation annotation-quote" data-type="quote" data-annotation="{{[[text]]}}" data-comment="[[n]]"></span>
+                        </pb:template>
+                    </model>
+                    <model predicate="lem and rdg" behaviour="pass-through">
                         <param name="lem" value="lem[1]/node()"/>
                         <param name="rdg" value="string-join(  for $rdg at $p in ./rdg return (      '&#34;rdg[' || $p || ']&#34;:&#34;' || $rdg/string() || '&#34;',         '&#34;wit[' || $p || ']&#34;:&#34;' || $rdg/@wit/string() || '&#34;'     ),     ',' )"/>
                         <pb:template xmlns="" xml:space="preserve">
@@ -187,6 +194,18 @@
                     </model>
                     <model behaviour="block" useSourceRendition="true">
                         <outputRendition xml:space="preserve">margin-left: 1em;</outputRendition>
+                    </model>
+                </elementSpec>
+                <elementSpec ident="anchor" mode="change">
+                    <model predicate="@subtype='commentStart'" behaviour="pass-through" cssClass="commentStart">
+                        <param name="id" value="@xml:id"/>
+                        <param name="n" value="@n"/>
+                        <pb:template xmlns="" xml:space="preserve">
+                            <a class="commentStart" id="[[id]]" data-comment="[[n]]" />
+                        </pb:template>
+                    </model>
+                    <model behaviour="anchor">
+                        <param name="id" value="@xml:id"/>
                     </model>
                 </elementSpec>
             </schemaSpec>
