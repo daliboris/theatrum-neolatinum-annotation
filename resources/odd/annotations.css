@@ -31,6 +31,14 @@
     color: darkgrey;
     grid-area: number;
 }
+a.commentStart::before {
+    content: '[' attr(data-comment) ': ';
+    color: hotpink;
+}
+span.annotation-quote[data-comment]::before {
+    content: ' :' attr(data-comment)']';
+    color: hotpink;
+}
 /*
 .annotation-person {
     border-bottom-width: 1px;
