@@ -172,7 +172,7 @@ declare variable $config:css-content-class := "content";
  : domain will share their users, so a user logged into application A
  : will be able to access application B.
  :)
-declare variable $config:login-domain := "org.exist.tei-simple";
+declare variable $config:login-domain := "cz.theatrum-neolatinum";
 
 (:~
  : Configuration XML for Apache FOP used to render PDF. Important here
@@ -322,7 +322,7 @@ declare variable $config:context-path :=
 (:~
  : The root of the collection hierarchy containing data.
  :)
-declare variable $config:data-root :=$config:app-root || "/data";
+declare variable $config:data-root := $config:app-root || "-data" || "/data";
 
 (:~
  : The root of the collection hierarchy whose files should be displayed
@@ -342,8 +342,12 @@ declare variable $config:data-exclude :=
 (:~
  : The root of the collection hierarchy containing registers data.
  :)
+ (:
 declare variable $config:register-root := $config:data-root || "/registers";
 declare variable $config:register-forms := $config:data-root || "/registers/templates";
+:)
+declare variable $config:register-root := $config:app-root || "/data" || "/registers";
+declare variable $config:register-forms := $config:register-root || "/templates";
 
 declare variable $config:register-map := map {
     "person": map {
