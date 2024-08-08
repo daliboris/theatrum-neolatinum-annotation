@@ -73,7 +73,7 @@
 			},
 			"cookieAuth": {
 				"type": "apiKey",
-				"name": "teipublisher.com.login",
+				"name": "theatrum-neolatinum.cz.login",
 				"in": "cookie"
 			}
 		}
