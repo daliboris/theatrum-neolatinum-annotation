@@ -35,6 +35,7 @@ declare namespace tei="http://www.tei-c.org/ns/1.0";
  : (default: 8000, but check where your server is running).
  :)
 declare variable $config:webcomponents :="latest";
+(: declare variable $config:webcomponents :="dev"; :)
 
 (:~
  : CDN URL to use for loading webcomponents. Could be changed if you created your
@@ -45,7 +46,7 @@ declare variable $config:webcomponents-cdn := "https://cdn.jsdelivr.net/npm/@tei
 (: declare variable $config:webcomponents-cdn := "http://localhost:8000"; :)
 
 (: Version of fore to use for annotation editor :)
-declare variable $config:fore :="1.9.0";
+declare variable $config:fore :="1.9.0"; (:2.2.0 | local :)
 
 (:~~
  : A list of regular expressions to check which external hosts are
@@ -346,8 +347,8 @@ declare variable $config:data-exclude :=
 declare variable $config:register-root := $config:data-root || "/registers";
 declare variable $config:register-forms := $config:data-root || "/registers/templates";
 :)
-declare variable $config:register-root := $config:app-root || "/data" || "/registers";
-declare variable $config:register-forms := $config:register-root || "/templates";
+declare variable $config:register-root := $config:app-root || "-register-data" || "/data";
+declare variable $config:register-forms := $config:app-root || "/data" || "/registers" || "/templates";
 
 declare variable $config:register-map := map {
     "person": map {
