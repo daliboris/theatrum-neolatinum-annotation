@@ -450,7 +450,7 @@ paper-icon-button[data-type="edit"] {
 
 [nonrelevant]{
     visibility:hidden;
-    display:block;
+    display:none;
 }
 
 #commit[nonrelevant] {
@@ -713,4 +713,8 @@ fx-control select:focus {
 
 fx-control, label{
     display:block;
+}
+
+fx-control input:read-only {
+    background-color: #ddd;
 }
