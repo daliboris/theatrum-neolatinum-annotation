@@ -4,6 +4,6 @@
   "description" : "Theatrum Neolatinum Annotation",
   "dependencies" : {
     "@teipublisher/pb-components" : "latest",
-    "@jinntec/fore" : "1.9.0"
+    "@jinntec/fore" : "2.2.0"
   }
 }
