@@ -120,19 +120,19 @@
 
                 <fx-group ref="commit[.='true']" id="commit" track-history="">
                     <section>
-                        <header>Revision Description</header>
+                        <header><pb-i18n key="annotate.revision.description">Revision Description</pb-i18n></header>
                         <fx-control ref="instance('i-commit')/@user">
-                            <label>User</label>
+                            <label><pb-i18n key="annotate.revision.user">User</pb-i18n></label>
                         </fx-control>
                         <fx-control ref="instance('i-commit')/message">
-                            <label>Change summary</label>
-                            <textarea class="widget" placeholder="Optional short description"/>
+                            <label><pb-i18n key="annotate.revision.change-summary">Change summary</pb-i18n></label>
+                            <textarea class="widget" data-i18n="[placeholder]annotate.revision.change-summary-placeholder" />
                         </fx-control>
                         <fx-control ref="instance('i-commit')/@status">
-                            <label>Status</label>
+                            <label><pb-i18n key="annotate.revision.status">Status</pb-i18n></label>
                             <select class="widget">
-                                <option value="feat">Enrichment</option>
-                                <option value="fix">Correction</option>
+                                <option value="feat"><pb-i18n key="annotate.revision.enrichment">Enrichment</pb-i18n></option>
+                                <option value="fix"><pb-i18n key="annotate.revision.correction">Correction</pb-i18n></option>
                             </select>
                         </fx-control>
                         <fx-trigger>
@@ -151,7 +151,7 @@
 
                 <fx-group ref="annotation" id="annotation">
                     <section>
-                        <header>Annotation Details</header>
+                        <header><pb-i18n key="annotate.annotation.details">Annotation Details</pb-i18n></header>
                         <iron-form id="edit-form">
                             <form action="">
                                 <div class="annotation-form person organization place term gloss">

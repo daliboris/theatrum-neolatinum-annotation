@@ -1,0 +1,17 @@
+{
+    "annotate": {
+        "revision" : {
+            "description": "Popis revize",
+            "user" : "Uživatel",
+            "change-summary" : "Shrnutí změn",
+            "change-summary-placeholder" : "Nepovinný stručný popis",
+            "status" : "Status",
+            "enrichment" : "Obohacení",
+            "correction" : "Oprava"    
+        },
+        "annotation" : {
+            "details" : "Detaily anotace"
+        }
+
+    }
+}

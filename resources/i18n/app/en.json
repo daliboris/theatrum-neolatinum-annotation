@@ -1,5 +1,17 @@
 {
-    "myapp": {
-        "title": "Foo"
+    "annotate": {
+        "revision" : {
+            "description": "Revision Description",
+            "user" : "User",
+            "change-summary" : "Change summary",
+            "change-summary-placeholder" : "Optional short description",
+            "status" : "Status",
+            "enrichment" : "Enrichment",
+            "correction" : "Correction"    
+        },
+        "annotation" : {
+            "details" : "Annotation Details"
+        }
+
     }
 }
