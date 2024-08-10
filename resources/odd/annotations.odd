@@ -179,6 +179,10 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="ref" mode="change">
+                    <model predicate="$parameters?mode='register-entry'" behaviour="link">
+                        <param name="uri" value="@target" />
+                        <param name="target" value="'_blank'" />
+                    </model>
                     <model behaviour="inline" cssClass="annotation annotation-ref"/>
                 </elementSpec>
                 <elementSpec ident="l" mode="change">
