@@ -46,7 +46,9 @@ declare variable $config:webcomponents-cdn := "https://cdn.jsdelivr.net/npm/@tei
 (: declare variable $config:webcomponents-cdn := "http://localhost:8000"; :)
 
 (: Version of fore to use for annotation editor :)
-declare variable $config:fore :="1.9.0"; (:2.2.0 | local :)
+(: declare variable $config:fore :="1.9.0"; :)
+declare variable $config:fore :="2.2.0";
+(: declare variable $config:fore :="local"; :)
 
 (:~~
  : A list of regular expressions to check which external hosts are
@@ -348,7 +350,7 @@ declare variable $config:register-root := $config:data-root || "/registers";
 declare variable $config:register-forms := $config:data-root || "/registers/templates";
 :)
 declare variable $config:register-root := $config:app-root || "-register-data" || "/data";
-declare variable $config:register-forms := $config:app-root || "/data" || "/registers" || "/templates";
+declare variable $config:register-forms := $config:register-root || "/templates";
 
 declare variable $config:register-map := map {
     "person": map {
