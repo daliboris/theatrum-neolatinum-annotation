@@ -303,20 +303,23 @@ declare function rapi:query($type as xs:string, $query as xs:string?) {
                         string-join(($birth, $death), " – ")
                     else
                         ()
+                let $items-seprator := if(empty($dates)) then "" else "; "
+                let $notes := string-join($person/tei:note/string(), "; ")
                 return
                     map {
                         "id": $person/@xml:id/string(),
                         "label": $person/tei:persName[@type="main"]/string(),
-                        "details": ``[`{$dates}`; `{$person/tei:note/string()}`]``,
+                        "details": ``[`{$dates}``{$items-seprator}``{$notes}`]``,
                         "link": $person/tei:ptr/@target/string()
                     }
             case "organization" return
                 for $org in collection($config:register-root)//tei:org[ft:query(tei:orgName, $query)]
+                let $notes := string-join($org/tei:note/string(), "; ")
                 return
                     map {
                         "id": $org/@xml:id/string(),
                         "label": $org/tei:orgName[@type="main"]/string(),
-                        "details": $org/tei:note/string(),
+                        "details": $notes,
                         "link": $org/tei:ptr/@target/string()
                     }
             case "term" return
@@ -528,7 +531,7 @@ declare function rapi:register-entry($request as map(*)) {
                         map {
                             "id": $entry/@xml:id/string(),
                             "strings": array { $strings },
-                            "details": <div>{$pm-config:web-transform($entry, map {}, "annotations.odd")}</div>
+                            "details": <div>{$pm-config:web-transform($entry, map {"mode" : "register-entry"}, "annotations.odd")}</div>
                         }
         else
             error($errors:NOT_FOUND, "Entry for " || $id || " not found")
