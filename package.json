@@ -1,9 +1,14 @@
 {
-  "name" : "tnlanno",
-  "version" : "1.0.0",
-  "description" : "Theatrum Neolatinum Annotation",
-  "dependencies" : {
-    "@teipublisher/pb-components" : "latest",
-    "@jinntec/fore" : "2.2.0"
+  "name": "tnlanno",
+  "version": "1.0.0",
+  "description": "Theatrum Neolatinum Annotation",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/daliboris/theatrum-neolatinum-annotation.git"
+  },
+  "license": "GPL-3.0",
+  "dependencies": {
+    "@daliboris/pb-components": "github:daliboris/tei-publisher-components#project/theatrum-neolatinum",
+    "@jinntec/fore": "2.2.0"
   }
 }
