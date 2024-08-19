@@ -1,4 +1,4 @@
-<project name="tnlanno" default="xar">
+<project name="${package(abbrev)}" default="xar">
     <xmlproperty file="${basedir}/expath-pkg.xml"/>
     <property file="${basedir}/local.build.properties" />
     <property file="${basedir}/build.properties" />
@@ -34,23 +34,34 @@
                 <include name="*.map"/>
             </fileset>
         </copy>
+        <copy todir="${app.build.dir}/resources/scripts/fore">
+            <fileset dir="${fore.dir}">
+                <include name="*.js"/>
+                <include name="*.map"/>
+                <exclude name="*-dev.js"/>
+                <exclude name="*-dev.*.map"/>
+            </fileset>
+        </copy>
         <copy todir="${app.build.dir}/resources/images">
-            <fileset dir="node_modules/@teipublisher/pb-components/images">
+            <fileset dir="${scripts.dir}/../images">
                 <include name="leaflet/*"/>
                 <include name="openseadragon/*"/>
             </fileset>
         </copy>
         <copy todir="${app.build.dir}/resources/css">
-            <fileset dir="node_modules/@teipublisher/pb-components/css"/>
-            <fileset dir="node_modules/@jinntec/fore/resources">
+            <fileset dir="${scripts.dir}/../css"/>
+            <fileset dir="${fore.dir}/../resources">
                 <include name="*.css"/>
             </fileset>
         </copy>
         <copy todir="${app.build.dir}/resources/lib">
-            <fileset dir="node_modules/@teipublisher/pb-components/lib"/>
+            <fileset dir="${scripts.dir}/../lib"/>
+        </copy>
+        <copy todir="${app.build.dir}/resources/i18n/app">
+            <fileset dir="./resources/i18n/app"/>
         </copy>
         <copy todir="${app.build.dir}/resources/i18n/common">
-            <fileset dir="../i18n/common"/>
+            <fileset dir="${scripts.dir}/../i18n/common"/>
         </copy>
     </target>
     <target name="xar-local" depends="npm.install,prepare,xar"/>
