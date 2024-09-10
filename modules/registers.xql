@@ -64,6 +64,8 @@ declare function rapi:save($request as map(*)) {
         then "organization" 
         else if($type = 'item') 
             then "gloss" 
+            else if($type = 'app') 
+            then "quote"
             else $type
 
     let $id := ($body/@xml:id, $request?parameters?id)[1]
@@ -142,6 +144,8 @@ declare function rapi:insert-point($type as xs:string) {
             $collection//tei:taxonomy
         case "gloss" return
             $collection//tei:list[@type="glossary"]
+        case "quote" return
+            $collection//tei:list[@type="apparatus"]
         default return
             $collection//tei:listPerson[@xml:id='pb-persons-annotation']
 };
@@ -247,6 +251,8 @@ declare function rapi:next($type) {
             return collection($config:register-root)/id($config?id)//tei:place[starts-with(@xml:id, $config?prefix)]/substring-after(@xml:id, $config?prefix)
         case "gloss"
             return collection($config:register-root)/id($config?id)//tei:item[starts-with(@xml:id, $config?prefix)]/substring-after(@xml:id, $config?prefix)
+        case "quote"
+            return collection($config:register-root)/id($config?id)//tei:app[starts-with(@xml:id, $config?prefix)]/substring-after(@xml:id, $config?prefix)
         default 
             return collection($config:register-root)/id($config?id)//tei:person[starts-with(@xml:id, $config?prefix)]/substring-after(@xml:id, $config?prefix)
     
@@ -347,7 +353,9 @@ declare function rapi:query($type as xs:string, $query as xs:string?) {
                     "label": $item/tei:label[@type="main"]/string(),
                     "details": ``[`{$variants}`; `{$definitions}`; `{$item/tei:note/string()}`]``,
                     "link": $item/tei:ptr/@target/string()
-                    }                    
+                    }
+            case "quote"
+                return()
             default return
                 ()
     } catch * {
@@ -478,6 +486,7 @@ declare function rapi:local-search-strings($type as xs:string, $entry as element
         case "organization" return $entry/tei:orgName/string()
         case "term" return $entry/tei:catDesc/string()
         case "gloss" return $entry/tei:label/string()
+        case "quote" return $entry//tei:quote[1]/string()
         default return $entry/tei:persName/string()
 };
 

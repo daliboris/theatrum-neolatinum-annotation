@@ -9,7 +9,7 @@ import module namespace config="http://www.tei-c.org/tei-simple/config" at "conf
 (:~
  : Name of the attribute to use as reference key for entities
  :)
-declare variable $anno:reference-key := 'ref';
+declare variable $anno:reference-key := ('ref', 'synch');
 
 (:~
  : Return the entity reference key for the given node.
@@ -33,6 +33,8 @@ declare function anno:entity-type($node as element()) as xs:string? {
             "gloss" else ()
         case element(tei:orgName) return
             "organization"
+        case element(tei:app) return if($node[tei:note/tei:cit]) then
+            "quote" else ()
         default return
             ()
 };
@@ -106,6 +108,8 @@ declare function anno:annotations($type as xs:string, $properties as map(*)?, $c
             $properties?content
         case "gloss" return
             <rs xmlns="http://www.tei-c.org/ns/1.0" type="gloss" ref="{$properties?ref}">{$content()}</rs>
+        case "quote"
+            return $content()
         default return
             $content()
 };
@@ -128,6 +132,8 @@ declare function anno:occurrences($type as xs:string, $key as xs:string) {
             collection($config:data-default)//tei:orgName[@ref = $key]
         case "gloss" return
             collection($config:data-default)//tei:rs[@type="gloss"][@ref = $key]
+        case "quote" return
+            collection($config:data-default)//tei:anchor[@type="delimiter"][@subtype="commentEnd"][@synch = $key]
          default return ()
 };
 

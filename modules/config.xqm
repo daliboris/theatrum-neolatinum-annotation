@@ -377,6 +377,11 @@ declare variable $config:register-map := map {
         "id": "pb-glosses",
         "default": "gloss-default",
         "prefix": "gloss-"
+    },
+    "quote": map {
+        "id": "pb-apparatus",
+        "default": "apparatus-default",
+        "prefix": "comm."
     }
 };
 
