@@ -34,7 +34,7 @@ declare namespace tei="http://www.tei-c.org/ns/1.0";
  : In this case, change $config:webcomponents-cdn to point to http://localhost:port 
  : (default: 8000, but check where your server is running).
  :)
-declare variable $config:webcomponents :="latest";
+declare variable $config:webcomponents :="local";
 (: declare variable $config:webcomponents :="dev"; :)
 
 (:~
@@ -47,8 +47,8 @@ declare variable $config:webcomponents-cdn := "https://cdn.jsdelivr.net/npm/@tei
 
 (: Version of fore to use for annotation editor :)
 (: declare variable $config:fore :="1.9.0"; :)
-declare variable $config:fore :="2.2.0";
-(: declare variable $config:fore :="local"; :)
+(: declare variable $config:fore :="2.2.0"; :)
+declare variable $config:fore :="local";
 
 (:~~
  : A list of regular expressions to check which external hosts are
