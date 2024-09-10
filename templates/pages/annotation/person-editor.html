@@ -83,14 +83,42 @@
                 <label>Person ID</label>
                 <fx-hint>unique identifier</fx-hint>
             </fx-control>
-            <fx-control ref="persName[@type='main']">
-                <label>Canonical form</label>
-                <fx-hint>Joachim Lelewel</fx-hint>
-            </fx-control>
-            <fx-control ref="persName[@type='sort']">
-                <label>Sorting form</label>
-                <fx-hint>Lelewel, Joachim</fx-hint>
-            </fx-control>
+            <fx-group id="pers-name" ref="persName[@type='main']">
+                <fieldset>
+                    <legend><pb-i18n key="annotations.person.canonical-form">Canonical form</pb-i18n></legend>
+                    <fx-control ref=".">
+                        <fx-hint>Joachim Lelewel</fx-hint>
+                    </fx-control>
+                    <fx-control ref="@xml:lang">
+                        <label>Jazyk</label>
+                        <select class="widget">
+                            <option value="la">latina</option>
+                            <option value="cs">čeština</option>
+                            <option value="en">angličtina</option>
+                        </select>
+                        <fx-hint>English</fx-hint>
+                    </fx-control>
+                </fieldset>
+            </fx-group>
+            <fx-group ref="persName[@type='sort']">
+                <fieldset>
+                    <legend><pb-i18n key="annotations.person.sorting-form">Sorting form</pb-i18n></legend>
+                    <fx-control ref=".">
+                        <fx-hint>Lelewel, Joachim</fx-hint>
+                    </fx-control>
+                    <fx-control ref="@xml:lang">
+                        <label>Jazyk</label>
+                        <select class="widget">
+                            <option value="la">latina</option>
+                            <option value="cs">čeština</option>
+                            <option value="en">angličtina</option>
+                        </select>
+                        <fx-hint>English</fx-hint>
+                    </fx-control>
+                </fieldset>
+            </fx-group>
+            
+             
             <fx-control ref="@sex">
                 <label>Sex</label>
                 <select class="widget">
@@ -179,15 +207,25 @@
 
             <fx-repeat id="r-nameVariant" ref="//persName[@type='variant']" class="two-col">
                 <template>
-                    <fx-control ref=".">
-                        <label>Variant form</label>
-                        <fx-hint>Joachim Lelewel</fx-hint>
-                    </fx-control>
-
-                    <fx-trigger>
-                        <paper-icon-button icon="close" data-i18n="[title]annotations.authority" title="delete"/>
-                        <fx-delete ref="."/>
-                    </fx-trigger>
+                    <fieldset>
+                        <legend><pb-i18n key="annotations.person.variant-form">Variant form</pb-i18n></legend>
+                        <fx-control ref=".">
+                            <fx-hint>Lelewel, Joachim</fx-hint>
+                        </fx-control>
+                        <fx-control ref="@xml:lang">
+                            <label>Jazyk</label>
+                            <select class="widget">
+                                <option value="la">latina</option>
+                                <option value="cs">čeština</option>
+                                <option value="en">angličtina</option>
+                            </select>
+                            <fx-hint>English</fx-hint>
+                        </fx-control>
+                        <fx-trigger>
+                            <paper-icon-button icon="close" data-i18n="[title]annotations.authority" title="delete"/>
+                            <fx-delete ref="."/>
+                        </fx-trigger>
+                    </fieldset>
                 </template>
             </fx-repeat>
         </fx-group>
