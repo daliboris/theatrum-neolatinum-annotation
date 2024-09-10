@@ -11,6 +11,19 @@
     <target>tnlanno</target>
     <permissions user="tnl" group="tei" mode="rw-rw-r--"/>
     <deployed />
+    <change version="0.4.0">
+        <ul xmlns="http://www.w3.org/1999/xhtml">
+            <li>separating UI, editions and register data into independent packages</li>
+            <li>rendering verse numbers in annotation view</li>
+            <li>editor for quotations in critical apparatus</li>
+            <li>write permission for group members</li>
+            <li>better metadata about the package</li>
+            <li>revision detail translation (in Czech)</li>
+            <li>using Fore version 2.2.0</li>
+            <li>&lt;ref&gt; elements in pop-ups as HTML links</li>
+            <li>placing the &lt;note&gt; element after selected text</li>
+        </ul>
+    </change>
     <change version="0.3.0">
         <ul xmlns="http://www.w3.org/1999/xhtml">
             <li>buttons for inserting Czech and English paragraphs in the toolbar of note editor</li>
