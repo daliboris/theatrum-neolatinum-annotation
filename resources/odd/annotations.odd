@@ -73,6 +73,7 @@
                     <model behaviour="inline" cssClass="annotation annotation-date"/>
                 </elementSpec>
                 <elementSpec ident="note" mode="change">
+                    <model predicate="$parameters?mode='register-entry'" behaviour="block" />
                     <model predicate="@type='annotation'" behaviour="omit"/>
                     <model predicate="parent::item[parent::list]" behaviour="paragraph"/>
                     <model behaviour="note">
@@ -163,13 +164,14 @@
                     <model behaviour="inline" cssClass="annotation annotation-hi" useSourceRendition="true"/>
                 </elementSpec>
                 <elementSpec ident="app" mode="add">
-                    <model predicate="note[cit | ref]" behaviour="pass-through">
+                    <!-- <model predicate="$parameters?mode='register-entry'" behaviour=""></model> -->
+                    <!-- <model predicate="note[cit | ref]" behaviour="pass-through">
                         <param name="n" value="@n"/>
                         <param name="text" value="string-join(  for $item at $p in ./note//*[not(*)] return (      '&#34;' || ($item/@type, local-name($item))[1] || '[' || $p || ']' || '&#34;:&#34;' || concat( if(exists($item/@subtype)) then ' (' || $item/@subtype || ') ' else (), $item/normalize-space()) || '&#34;'),     ',' )"/>
                         <pb:template xmlns="" xml:space="preserve">
                             <span class="annotation annotation-quote" data-type="quote" data-annotation="{{[[text]]}}" data-comment="[[n]]"></span>
                         </pb:template>
-                    </model>
+                    </model> -->
                     <model predicate="lem and rdg" behaviour="pass-through">
                         <param name="lem" value="lem[1]/node()"/>
                         <param name="rdg" value="string-join(  for $rdg at $p in ./rdg return (      '&#34;rdg[' || $p || ']&#34;:&#34;' || $rdg/string() || '&#34;',         '&#34;wit[' || $p || ']&#34;:&#34;' || $rdg/@wit/string() || '&#34;'     ),     ',' )"/>
@@ -184,6 +186,31 @@
                         <param name="target" value="'_blank'" />
                     </model>
                     <model behaviour="inline" cssClass="annotation annotation-ref"/>
+                </elementSpec>
+                <elementSpec ident="quote" mode="change">
+                    <model predicate="ancestor::p" behaviour="inline" useSourceRendition="true">
+            <desc>If it is inside a paragraph then it is inline, otherwise it is block
+                        level</desc>
+            <outputRendition xml:space="preserve" scope="before">
+            content: '‘';
+            </outputRendition>
+            <outputRendition xml:space="preserve" scope="after">
+            content: '’';
+            </outputRendition>
+        </model>
+            <model predicate="@type" useSourceRendition="true" behaviour="block" cssClass="[[@type]]" />
+                    <model behaviour="block" useSourceRendition="true">
+            <desc>If it is inside a paragraph then it is inline, otherwise it is block
+                        level</desc>
+            <outputRendition xml:space="preserve">
+            margin-left: 10px; margin-right: 10px;
+            </outputRendition>
+        </model>
+                </elementSpec>
+                <elementSpec ident="bibl" mode="change">
+                    <model predicate="parent::listBibl" behaviour="listItem"/>
+                    <model predicate="parent::cit" behaviour="listItem"/>
+                    <model behaviour="inline"/>
                 </elementSpec>
                 <elementSpec ident="l" mode="change">
                     <model predicate="@n" behaviour="pass-through">
@@ -206,6 +233,15 @@
                         <param name="n" value="@n"/>
                         <pb:template xmlns="" xml:space="preserve">
                             <a class="commentStart" id="[[id]]" data-comment="[[n]]" />
+                        </pb:template>
+                    </model>
+                    <model behaviour="inline" cssClass="annotation annotation-quote authority"/>
+                    <model predicate="@subtype='commentEnd'" behaviour="pass-through" cssClass="commentEnd">
+                        <param name="id" value="@xml:id"/>
+                        <param name="n" value="@n"/>
+                        <param name="text" value="concat('&#34;ref&#34;', ':', '&#34;', substring-after(@synch, '#'), '&#34;')"/>
+                        <pb:template xmlns="" xml:space="preserve">
+                            <span class="annotation annotation-quote authority" data-type="quote" data-annotation="{{[[text]]}}" data-comment="[[n]]"></span>
                         </pb:template>
                     </model>
                     <model behaviour="anchor">
