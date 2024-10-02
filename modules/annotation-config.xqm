@@ -6,6 +6,8 @@ declare namespace tei="http://www.tei-c.org/ns/1.0";
 
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "config.xqm";
 
+import module namespace console="http://exist-db.org/xquery/console";
+
 (:~
  : Name of the attribute to use as reference key for entities
  :)
@@ -35,6 +37,8 @@ declare function anno:entity-type($node as element()) as xs:string? {
             "organization"
         case element(tei:app) return if($node[tei:note/tei:cit]) then
             "quote" else ()
+        case element(tei:note) return if($node[@xml:id]) then
+            "note" else ()
         default return
             ()
 };
@@ -67,12 +71,14 @@ declare function anno:annotations($type as xs:string, $properties as map(*)?, $c
             <choice xmlns="http://www.tei-c.org/ns/1.0"><sic>{$content()}</sic><corr>{$properties?corr}</corr></choice>
         case "reg" return
             <choice xmlns="http://www.tei-c.org/ns/1.0"><orig>{$content()}</orig><reg>{$properties?reg}</reg></choice>
+            (:
         case "note" return 
             let $parsed := parse-xml-fragment($properties?content) => anno:fix-namespaces()
             return (
                 $content(),
                 <note xmlns="http://www.tei-c.org/ns/1.0">{$parsed}</note>
             )
+            :)
         case "date" return
             <date xmlns="http://www.tei-c.org/ns/1.0">
             {
@@ -110,6 +116,21 @@ declare function anno:annotations($type as xs:string, $properties as map(*)?, $c
             <rs xmlns="http://www.tei-c.org/ns/1.0" type="gloss" ref="{$properties?ref}">{$content()}</rs>
         case "quote"
             return $content()
+        case "note"
+            return
+            let $log := console:log(("anno:annotations", " :: ", "$properties?ref: ", $properties?ref, "; $content(): ", $content()))
+            let $note := collection($config:register-root)/id($properties?ref)
+            let $uri := base-uri($note)
+            let $doc := doc($uri)
+            let $doc-item := $doc//tei:item[@xml:id=$properties?ref]
+            let $n := $doc-item/tei:note/@*[1]/string()
+            let $log := console:log(("anno:annotations", " :: ", "$note: ", $note, "; $n: ", $n, "$doc-item: ", $doc-item))
+            return (<anchor xmlns="http://www.tei-c.org/ns/1.0" 
+                        type="delimiter" subtype="note-start" n="{$n}"
+                        xml:id="{$properties?ref}.start" />,$content(),<anchor xmlns="http://www.tei-c.org/ns/1.0" 
+                        type="delimiter" subtype="note-end" n="{$n}"
+                        synch="#{$properties?ref}"
+                        xml:id="{$properties?ref}.anch" />)
         default return
             $content()
 };
@@ -134,6 +155,8 @@ declare function anno:occurrences($type as xs:string, $key as xs:string) {
             collection($config:data-default)//tei:rs[@type="gloss"][@ref = $key]
         case "quote" return
             collection($config:data-default)//tei:anchor[@type="delimiter"][@subtype="commentEnd"][@synch = $key]
+        case "note" return
+            collection($config:data-default)//tei:anchor[@type="delimiter"][@subtype="note"][@synch = $key]
          default return ()
 };
 
@@ -149,4 +172,28 @@ declare %private function anno:fix-namespaces($nodes as item()*) {
                 }
             default return
                 $node
+};
+
+declare function anno:source-document($type as xs:string, $entity as element()?) {
+    if(empty($entity)) then ()
+    else
+    switch($type)
+        case "quote"
+        case "note" return $entity/@source
+        (:
+            if(contains($entity/@source, '.text')) 
+                    then 
+                        substring-before($entity/@source, '.text') 
+                    else ()
+        :)
+        default return ()
+};
+
+declare function anno:source-document-id($type as xs:string, $source as xs:string?) {
+    if(empty($source)) then ()
+    else
+    switch($type)
+        case "quote"
+        case "note" return if(contains($source, '.text')) then substring-before($source, ".text") else $source
+        default return()
 };
