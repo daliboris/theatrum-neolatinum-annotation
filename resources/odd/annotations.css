@@ -31,13 +31,22 @@
     color: darkgrey;
     grid-area: number;
 }
-a.commentStart::before {
-    content: '[' attr(data-comment) ': ';
+a.quote-start::before {
+    content: '[' attr(data-number) ': ';
     color: hotpink;
 }
-span.annotation-quote[data-comment]::before {
-    content: ' :' attr(data-comment)']';
+span.annotation-quote[data-annotation]::before {
+    content: ' :' attr(data-number)']';
     color: hotpink;
+}
+
+a.note-start::before {
+    content: '[' attr(data-number) ': ';
+    color: var(--pb-annotation-note);
+}
+span.annotation-note[data-annotation]::before {
+    content: ' :' attr(data-number)']';
+    color: var(--pb-annotation-note);
 }
 /*
 .annotation-person {
