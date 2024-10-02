@@ -18,12 +18,13 @@
             <data></data>
         </fx-instance>
         <fx-bind ref="@xml:id" readonly="string-length(getRef()) != 0" />
+        <fx-bind ref="@source" readonly="string-length(getDocument()) != 0" />
 
         <fx-submission id="load" method="GET" replace="instance">
             <fx-action event="submit-done">
                 <!-- setting selection we got from user as default -->
                 <fx-action if="instance()/@xml:id = 'quote-NEW'">
-                    <fx-setvalue ref="instance()//note/cit/quote[1]/substring(., 1, 20) ! . || '...'" value="query()"></fx-setvalue>
+                    <fx-setvalue ref="instance()//note/cit/quote[1]" value="query()"></fx-setvalue>
                 </fx-action>
             </fx-action>
         </fx-submission>
@@ -45,6 +46,11 @@
             return ref ? ref.innerHTML : '';
         </fx-function>
 
+        <fx-function signature="getDocument() as xs:string" type="text/javascript">
+            const documentPath = document.querySelector('fx-instance#i-default').instanceData.querySelector('document-path');
+            return documentPath ? documentPath.innerHTML : '';
+        </fx-function>
+
         <fx-function signature="query() as xs:string" type="text/javascript">
             const query = document.querySelector('fx-instance#i-default').instanceData.querySelector('query');
             return query ? query.innerHTML : '';
@@ -55,7 +61,7 @@
     ### Use the header to give the main name of the page plus provide eventual buttons needed
     -->
     <header>
-        <h1>Quote '{instance('default')//note/cit/quote[1]/substring(., 1, 20) ! . || '...'}'</h1>
+        <h1>Quote '{instance('default')//note/cit/quote[1]/substring(., 1, 40) ! . || '...'}'</h1>
         <div>
             <fx-trigger>
                 <paper-icon-button icon="icons:save" data-i18n="[title]annotations.save"></paper-icon-button>
@@ -81,14 +87,18 @@
             </h2>
             <div>
                 <label>Typ</label>
-                <fx-output ref="note/cit/quote" value="concat(@type, if(@subtype) then ': ' else '', @subtype)"></fx-output>
+                <fx-repeat ref="app/note/cit/quote">
+                    <template>
+                        <span>{concat(./@type, if(./@subtype) then ': ' else '', ./@subtype)}</span>
+                    </template>
+                </fx-repeat>
             </div>
             
             <fx-control ref="@xml:id">
                 <label>Quote ID</label>
                 <fx-hint>jedinečný identifikátor</fx-hint>
             </fx-control>
-            <fx-group id="note" ref="instance()" class="col-2">
+            <fx-group id="note" ref="app" class="col-2">
             <h2>Note</h2>
             <fx-control ref="note" as="node" update-event="blur">
                 <jinn-xml-editor unwrap="unwrap" class="widget" placeholder="[Inline text/markup or sequence of paragraphs]" schema="resources/scripts/annotations/tei.json" schema-root="note" namespace="http://www.tei-c.org/ns/1.0">
@@ -129,6 +139,7 @@
             <fx-send submission="save" url="api/register/quote-NEW"></fx-send>
         </fx-action>
     </fx-action>
+    <!-- <fx-inspector></fx-inspector> -->
 </fx-fore>
 
 </body>
