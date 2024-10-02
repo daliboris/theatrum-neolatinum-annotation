@@ -381,7 +381,14 @@ declare variable $config:register-map := map {
     "quote": map {
         "id": "pb-apparatus",
         "default": "apparatus-default",
-        "prefix": "comm."
+        "prefix": "app.",
+        "id-suffix": ".apparatus"
+    },
+    "note": map {
+        "id": "pb-notes",
+        "default": "note-default",
+        "prefix": "note.",
+        "id-suffix": ".notes"
     }
 };
 
@@ -679,3 +686,5 @@ declare function config:get-fonts-dir() as xs:string? {
         else
             ()
 };
+
+declare variable $config:cookie-auth-name := "theatrum-neolatinum.cz.login";
