@@ -7,8 +7,10 @@ import module namespace errors = "http://e-editiones.org/roaster/errors";
 import module namespace config="http://www.tei-c.org/tei-simple/config" at "config.xqm";
 import module namespace annocfg = "http://teipublisher.com/api/annotations/config" at "annotation-config.xqm";
 import module namespace pm-config="http://www.tei-c.org/tei-simple/pm-config" at "pm-config.xql";
+import module namespace console="http://exist-db.org/xquery/console";
 
 declare namespace tei="http://www.tei-c.org/ns/1.0";
+declare namespace functx = "http://www.functx.com";
 
 (:~
  : Resolve register entry by id and type and return the record for use in the editing form
@@ -16,8 +18,11 @@ declare namespace tei="http://www.tei-c.org/ns/1.0";
  :)
 declare function rapi:entry($request as map(*)) {
     let $id := xmldb:decode($request?parameters?id)
-    let $entry := collection($config:register-root)/id($id)
     let $type := xmldb:decode($request?parameters?type)
+
+    let $entry := collection($config:register-root)/id($id)
+
+    let $log := console:log(("rapi:entry", "&lt;lb /&gt;", $entry, " ", $type))
 
     return
       if ($id) then
@@ -29,6 +34,7 @@ declare function rapi:entry($request as map(*)) {
                     collection($config:register-root)/id($entry-template)/child::*
         else
             error($errors:BAD_REQUEST, "No " || $type || " entry id specified")
+
 };
 
 
@@ -56,10 +62,23 @@ declare function rapi:delete($request as map(*)) {
 :)
 declare function rapi:save($request as map(*)) {
 
-    let $user := request:get-attribute("teipublisher.com.login.user")
+    let $user := request:get-attribute($config:cookie-auth-name)
     let $body := $request?body/*[1]
+    let $child := $body/*[1]
+    
 
     let $type := local-name($body)
+    let $child-name := local-name($child)
+    let $type := switch($type)
+        case "org" return "organization"
+        case "item" return
+            switch($child-name)
+                case "label" return if($body[tei:gloss]) then "gloss" else $child-name
+                case "app" return "quote"
+                case "note" return "note"
+                default return $child-name
+        default return $type
+    (:
     let $type := if ($type = 'org') 
         then "organization" 
         else if($type = 'item') 
@@ -67,7 +86,8 @@ declare function rapi:save($request as map(*)) {
             else if($type = 'app') 
             then "quote"
             else $type
-
+    :)
+    let $source := annocfg:source-document($type, $body)
     let $id := ($body/@xml:id, $request?parameters?id)[1]
 
     let $data := rapi:prepare-record($body, $user, $type)
@@ -76,7 +96,7 @@ declare function rapi:save($request as map(*)) {
     let $record := if(exists($record)) then 
             $record
         else
-            rapi:insert-point($type)/id($id)
+            rapi:insert-point($type, $source)/id($id)
 
     return
         if ($record) then
@@ -93,7 +113,8 @@ declare function rapi:save($request as map(*)) {
 
 declare function rapi:add-entry($record, $type) {
     let $id := $record/@xml:id
-    let $target := rapi:insert-point($type)
+    let $source := annocfg:source-document($type, $record)
+    let $target := rapi:insert-point($type, $source)
     let $update := update insert $record into $target
     (: some newly added records are not indexed, the must be updated to be indexed :)
     (: let $record := $target/id($id) :)
@@ -131,9 +152,16 @@ declare function rapi:replace-entry($record, $data) {
 (:~
  : Return the insertion point to which a local authority record should be saved.
  :)
-declare function rapi:insert-point($type as xs:string) {
+declare function rapi:insert-point($type as xs:string, $source as xs:string?) {
+    (:
     let $root := $config:register-map?($type)?id
-    let $collection := collection($config:register-root)/id($root)
+    let $root-id := if(empty($source)) 
+            then $root
+            else annocfg:source-document-id($type, $source) || $config:register-map?($type)?id-suffix
+    let $log := console:log(("rapi:insert-point :: ", "$root: ", $root, "; $root-id: ", $root-id))
+    let $collection := collection($config:register-root)/id($root-id)
+    :)
+    let $collection := rapi:insert-point-root($type, $source)
     return 
     switch ($type)
         case "place" return
@@ -145,9 +173,19 @@ declare function rapi:insert-point($type as xs:string) {
         case "gloss" return
             $collection//tei:list[@type="glossary"]
         case "quote" return
-            $collection//tei:list[@type="apparatus"]
+             $collection (://tei:list[@type="apparatus"] :)
+        case "note" return
+            $collection (://tei:list[@type="notes"] :)
         default return
             $collection//tei:listPerson[@xml:id='pb-persons-annotation']
+};
+
+declare function rapi:insert-point-root($type as xs:string, $source as xs:string?) {
+    let $config := $config:register-map?($type)
+    let $source-id := annocfg:source-document-id($type, $source)
+    let $root := collection($config:register-root)
+    let $root := if(empty($source-id)) then $root/id($config?id) else $root/id($source-id || $config?id-suffix)
+    return $root
 };
 
 (:~
@@ -168,8 +206,17 @@ return if(exists($collection))
  :)
 declare function rapi:prepare-record($node as item()*, $resp, $type) {
     let $new := $type || '-NEW'
+    let $is-new := $node/@xml:id=$new
+    let $source := annocfg:source-document($type, $node)
 
-    let $id := if ($node/@xml:id=$new) then rapi:next($type) else $node/@xml:id
+    let $n := if ($is-new) then rapi:next-number($type, $source) else ()
+    let $id := if ($is-new) then rapi:next($type, $source)
+    (:
+        if(empty($source)) 
+            then rapi:next($type)
+            else rapi:next($type, $source)
+    :)
+        else $node/@xml:id
 
     let $elements-to-change := ("person", "place", "item")
     let $element-name := if($node instance of element()) then local-name($node) else ()
@@ -188,7 +235,16 @@ declare function rapi:prepare-record($node as item()*, $resp, $type) {
                     attribute resp {$resp}
                     ,
                     for $child in $node/node()
-                    return $child
+                        return 
+                            if($element-name = "item") then
+                                let $subelement-name := if($child instance of element()) then local-name($child) else ()
+                                return
+                                    if(empty($subelement-name)) then $child
+                                    else if($subelement-name = "note") 
+                                        then functx:add-attributes($child, xs:QName('n'), $n)
+                                        else $child
+                            else
+                                $child
                 }
         else
             $node
@@ -235,6 +291,22 @@ declare function rapi:prepare-record($node as item()*, $resp, $type) {
 :)
 };
 
+declare function functx:add-attributes
+  ( $elements as element()* ,
+    $attrNames as xs:QName* ,
+    $attrValues as xs:anyAtomicType* )  as element()? {
+
+   for $element in $elements
+   return element { node-name($element)}
+                  { for $attrName at $seq in $attrNames
+                    return if ($element/@*[node-name(.) = $attrName])
+                           then ()
+                           else attribute {$attrName}
+                                          {$attrValues[$seq]},
+                    $element/@*,
+                    $element/node() }
+ } ;
+
 (:~ 
 : Determine next available id starting with a prefix chosen for a register type 
 : prefixes for each type are specified in $config:register-map
@@ -252,7 +324,9 @@ declare function rapi:next($type) {
         case "gloss"
             return collection($config:register-root)/id($config?id)//tei:item[starts-with(@xml:id, $config?prefix)]/substring-after(@xml:id, $config?prefix)
         case "quote"
-            return collection($config:register-root)/id($config?id)//tei:app[starts-with(@xml:id, $config?prefix)]/substring-after(@xml:id, $config?prefix)
+            return collection($config:register-root)/id($config?id)//tei:app[contains(@xml:id, $config?prefix)]/substring-after(@xml:id, $config?prefix)
+        case "note"
+            return collection($config:register-root)/id($config?id)//tei:note[contains(@xml:id, $config?prefix)]/substring-after(@xml:id, $config?prefix)
         default 
             return collection($config:register-root)/id($config?id)//tei:person[starts-with(@xml:id, $config?prefix)]/substring-after(@xml:id, $config?prefix)
     
@@ -266,6 +340,50 @@ declare function rapi:next($type) {
     
     return $config?prefix || rapi:pad($next, 6)
 
+};
+
+declare function rapi:next($type, $source as xs:string?) { 
+    (:
+    let $config := $config:register-map?($type)
+    let $source-id := annocfg:source-document-id($type, $source)
+    let $root := collection($config:register-root)
+    let $root := if(empty($source-id)) then $root/id($config?id) else $root/id($source-id || $config?id-suffix)
+    :)
+
+ 
+    (: let $log := console:log(("rapi:next", " $source-id: ", $source-id, "; $id-prefix: ", $id-prefix, "; $last: ", $last)) :)
+    let $config := $config:register-map?($type)
+    let $source-id := annocfg:source-document-id($type, $source)
+    let $id-prefix := if(empty($source)) then $config?prefix else $source-id || "." || $config?prefix
+    let $next := rapi:next-number($type, $source)
+    return $id-prefix || rapi:pad($next, 6)
+};
+
+declare function rapi:next-number($type, $source as xs:string?) {
+   let $root := rapi:insert-point-root($type, $source)
+    let $config := $config:register-map?($type)
+    let $source-id := annocfg:source-document-id($type, $source)
+    let $id-prefix := if(empty($source)) then $config?prefix else $source-id || "." || $config?prefix
+ 
+
+    let $all-items := 
+        switch ($type)
+            case "place" return $root//tei:place[starts-with(@xml:id, $id-prefix)]
+            case "gloss" 
+            case "quote"
+            case "note" 
+                return $root//tei:item[starts-with(@xml:id, $id-prefix)]
+            default 
+                return $root//tei:person[starts-with(@xml:id, $id-prefix)]
+    let $all-ids := $all-items/substring-after(@xml:id, $id-prefix)
+    let $last := if (count($all-ids)) then sort($all-ids)[last()] else 0 (: 1 :)
+    let $next :=
+            try {
+                xs:integer($last) + 1
+            } catch * {
+                '_error'
+            }
+    return $next
 };
 
 declare function rapi:pad($value, $len) {
@@ -355,6 +473,8 @@ declare function rapi:query($type as xs:string, $query as xs:string?) {
                     "link": $item/tei:ptr/@target/string()
                     }
             case "quote"
+                return()
+            case "note"
                 return()
             default return
                 ()
@@ -487,6 +607,7 @@ declare function rapi:local-search-strings($type as xs:string, $entry as element
         case "term" return $entry/tei:catDesc/string()
         case "gloss" return $entry/tei:label/string()
         case "quote" return $entry//tei:quote[1]/string()
+        case "note" return $entry/string()
         default return $entry/tei:persName/string()
 };
 
@@ -509,7 +630,8 @@ declare function rapi:save-local-copy($request as map(*)) {
             }
         else
             let $record := rapi:create-record($type, $id, $data)
-            let $target := rapi:insert-point($type)
+            let $source := annocfg:source-document($type, $record)
+            let $target := rapi:insert-point($type, $source)
             return 
                 if (sm:has-access(xs:anyURI(document-uri(root($target))), "w")) then
                 (
