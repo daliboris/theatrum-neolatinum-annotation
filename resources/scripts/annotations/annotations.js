@@ -791,7 +791,8 @@ window.addEventListener("WebComponentsReady", () => {
 	const editEntity = document.getElementById('edit-entity');
 	editEntity.addEventListener('click', () => {
 		const ref = editEntity.parentNode.parentNode.querySelector('.form-ref');
-		document.dispatchEvent(new CustomEvent('pb-authority-edit-entity', { detail: {id: ref.value, type }}));
+		const documentPath = doc.path;
+		document.dispatchEvent(new CustomEvent('pb-authority-edit-entity', { detail: {id: ref.value, type, documentPath: documentPath }}));
 	});
 
 	const authEditor = document.getElementById('authority-editor');
@@ -905,11 +906,13 @@ window.addEventListener("WebComponentsReady", () => {
 
 	window.pbEvents.subscribe("pb-annotation-detail", "transcription", (ev) => {
 		switch (ev.detail.type) {
+			/*
 			case "note":
 				const data = JSON.parse(ev.detail.span.dataset.annotation);
 				ev.detail.container.innerHTML = data.properties.note;
 				ev.detail.ready();
 				break;
+			*/
 			default:
 				document
 					.querySelector("pb-authority-lookup")
