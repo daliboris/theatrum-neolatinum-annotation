@@ -160,7 +160,18 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="corr" mode="change"/>
+                <elementSpec ident="label" mode="change">
+                     <model predicate="$parameters?mode='register-entry' and parent::item" behaviour="heading" useSourceRendition="true">
+                        <param name="level" value="5"/>
+                    </model> 
+                    <model behaviour="inline" useSourceRendition="true"/>
+                </elementSpec>
+                 <elementSpec ident="gloss" mode="change">
+                    <model predicate="$parameters?mode='register-entry'" behaviour="paragraph" useSourceRendition="true"/>
+                    <model behaviour="inline" useSourceRendition="true"/>
+                </elementSpec>
                 <elementSpec ident="hi" mode="change">
+                     <model predicate="$parameters?mode='register-entry'" behaviour="inline" useSourceRendition="true"/>
                     <model behaviour="inline" cssClass="annotation annotation-hi" useSourceRendition="true"/>
                 </elementSpec>
                 <elementSpec ident="app" mode="add">
@@ -187,29 +198,37 @@
                     </model>
                     <model behaviour="inline" cssClass="annotation annotation-ref"/>
                 </elementSpec>
+                <elementSpec ident="item" mode="change">
+                    <model predicate="$parameters?mode='register-entry' and parent::list" behaviour="block" />
+                    <model behaviour="listItem"/>
+                </elementSpec>
                 <elementSpec ident="quote" mode="change">
                     <model predicate="ancestor::p" behaviour="inline" useSourceRendition="true">
-            <desc>If it is inside a paragraph then it is inline, otherwise it is block
-                        level</desc>
-            <outputRendition xml:space="preserve" scope="before">
-            content: '‘';
-            </outputRendition>
-            <outputRendition xml:space="preserve" scope="after">
-            content: '’';
-            </outputRendition>
-        </model>
-            <model predicate="@type" useSourceRendition="true" behaviour="block" cssClass="[[@type]]" />
-                    <model behaviour="block" useSourceRendition="true">
-            <desc>If it is inside a paragraph then it is inline, otherwise it is block
-                        level</desc>
-            <outputRendition xml:space="preserve">
-            margin-left: 10px; margin-right: 10px;
-            </outputRendition>
-        </model>
+                        <desc>If it is inside a paragraph then it is inline, otherwise it is block level</desc>
+                        <outputRendition xml:space="preserve" scope="before">content: '‘';</outputRendition>
+                        <outputRendition xml:space="preserve" scope="after">content: '’';</outputRendition>
+                    </model>
+                    <model predicate="$parameters?mode='register-entry'" behaviour="pass-through">
+                        <param name="title" value="if(@type) then @type else 'quote'"/>
+                        <param name="type" value="@type"/>
+                        <param name="subtype" value="@subtype"/>
+                        <param name="relation-subtype" value="concat('relation', if(@subtype) then '-' else '', @subtype)"/>
+                        <pb:template xmlns="" xml:space="preserve">
+                            <p class="tei-quote [[type]] [[relation-subtype]]" aria-label="[[type]] [[subtype]]" title="[[title]] [[subtype]]"><span>[[content]]</span></p>
+                        </pb:template>
+                    </model>
+                    <model predicate="@type" useSourceRendition="true" behaviour="block" />
+                     <model behaviour="block" useSourceRendition="true">
+                        <desc>If it is inside a paragraph then it is inline, otherwise it is block level</desc>
+                        <outputRendition xml:space="preserve">margin-left: 10px; margin-right: 10px;</outputRendition>
+                    </model>
                 </elementSpec>
                 <elementSpec ident="bibl" mode="change">
                     <model predicate="parent::listBibl" behaviour="listItem"/>
-                    <model predicate="parent::cit" behaviour="listItem"/>
+                    <model predicate="parent::cit" behaviour="listItem" cssClass="bibl"/>
+                    <model behaviour="inline"/>
+                </elementSpec>
+                <elementSpec ident="biblScope" mode="add">
                     <model behaviour="inline"/>
                 </elementSpec>
                 <elementSpec ident="l" mode="change">
@@ -228,20 +247,35 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="anchor" mode="change">
-                    <model predicate="@subtype='commentStart'" behaviour="pass-through" cssClass="commentStart">
+                    <model predicate="ends-with(@subtype, '-start')" behaviour="pass-through">
                         <param name="id" value="@xml:id"/>
                         <param name="n" value="@n"/>
+                        <param name="class" value="@subtype"/>
                         <pb:template xmlns="" xml:space="preserve">
-                            <a class="commentStart" id="[[id]]" data-comment="[[n]]" />
+                            <a class="[[class]]" id="[[id]]" data-number="[[n]]" />
                         </pb:template>
                     </model>
-                    <model behaviour="inline" cssClass="annotation annotation-quote authority"/>
-                    <model predicate="@subtype='commentEnd'" behaviour="pass-through" cssClass="commentEnd">
+                    <model behaviour="pass-through">
+                        <param name="type" value="substring-before(@subtype, '-')"/>
+                        <pb:template xmlns="" xml:space="preserve">
+                            <span class="annotation annotation-[[type]] authority">[[content]]</span>
+                        </pb:template>
+                    </model>
+                    <model predicate="ends-with(@subtype, '-end')" behaviour="pass-through">
+                        <param name="id" value="@xml:id"/>
+                        <param name="n" value="@n"/>
+                        <param name="text" value="concat('&#34;ref&#34;', ':', '&#34;', substring-after(@synch, '#'), '&#34;')"/>
+                        <param name="type" value="substring-before(@subtype, '-')"/>
+                        <pb:template xmlns="" xml:space="preserve">
+                            <span class="annotation annotation-[[type]] authority" data-type="[[type]]" data-annotation="{{[[text]]}}" data-number="[[n]]"></span>
+                        </pb:template>
+                    </model>
+                    <model predicate="@subtype='note'" behaviour="pass-through" cssClass="note-place">
                         <param name="id" value="@xml:id"/>
                         <param name="n" value="@n"/>
                         <param name="text" value="concat('&#34;ref&#34;', ':', '&#34;', substring-after(@synch, '#'), '&#34;')"/>
                         <pb:template xmlns="" xml:space="preserve">
-                            <span class="annotation annotation-quote authority" data-type="quote" data-annotation="{{[[text]]}}" data-comment="[[n]]"></span>
+                            <span class="annotation annotation-note authority" data-type="note" data-annotation="{{[[text]]}}" data-comment="[[n]]"></span>
                         </pb:template>
                     </model>
                     <model behaviour="anchor">
