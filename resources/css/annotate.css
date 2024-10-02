@@ -718,3 +718,43 @@ fx-control, label{
 fx-control input:read-only {
     background-color: #ddd;
 }
+
+.italic {
+    font-style: italic;
+}
+
+.tei-quote {
+    border-left: 2px #32a1ce;;
+    padding-left: 1em;
+}
+
+.tei-quote {
+    border-left-style: solid;
+}
+
+.tei-quote.paraphrase {
+    border-left-style: dashed;
+}
+
+.tei-quote.allusion {
+    border-left-style: dotted;
+}
+
+.tei-quote.relation-equal::before {
+    content: ' = ';
+}
+
+.tei-quote.relation-successor::before {
+    content: ' 🔽 ';
+}
+
+.tei-quote.relation-predecessor::before {
+    content: ' 🔼 ';
+}
+.bibl span[class*=tei-author] {
+    font-weight: bold;
+}
+
+.bibl span[class*=tei-title] {
+    font-style: italic;
+}
