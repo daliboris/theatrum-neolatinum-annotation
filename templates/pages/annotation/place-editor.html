@@ -38,7 +38,7 @@
                     </fx-dispatch>
                 </fx-action>
             <fx-action event="submit-error">
-                <fx-message>Failed to save data - Please login</fx-message>
+                <fx-message><pb-i18n key="annotations.fore.failed-save-login">Failed to save data - Please login</pb-i18n></fx-message>
             </fx-action>
         </fx-submission>
 
@@ -56,7 +56,7 @@
     ### Use the header to give the main name of the page plus provide eventual buttons needed
     -->
     <header>
-        <h1>Place</h1>
+        <h1><pb-i18n key="annotations.place.header">Place</pb-i18n></h1>
         <div>
             <fx-trigger>
                 <paper-icon-button icon="icons:save" data-i18n="[title]annotations.save"/>
@@ -78,23 +78,23 @@
     <main>
         <!-- begin section general -->
         <fx-group id="general" ref="instance()" class="col-2">
-            <h2>Place ID:
+            <h2><pb-i18n key="annotations.place.id">Place ID</pb-i18n>:
                 <fx-output ref="@xml:id"/>
             </h2>
             <fx-control ref="@xml:id">
-                <label>Place ID</label>
-                <fx-hint>unique identifier</fx-hint>
+                <label><pb-i18n key="annotations.place.id">Place ID</pb-i18n></label>
+                <fx-hint><pb-i18n key="annotations.place.id-hint">unique identifier</pb-i18n></fx-hint>
             </fx-control>
             <fx-control ref="placeName[@type='main']">
-                <label>Canonical form</label>
+                <label><pb-i18n key="annotations.place.canonical-form">Canonical form</pb-i18n></label>
                 <fx-hint>Kraków</fx-hint>
             </fx-control>
             <fx-control ref="placeName[@type='sort']">
-                <label>Sorting form</label>
+                <label><pb-i18n key="annotations.place.sorting-form">Sorting form</pb-i18n></label>
                 <fx-hint>Krakow</fx-hint>
             </fx-control>
             <fx-control ref="@type">
-                <label>Type</label>
+                <label><pb-i18n key="annotations.place.type">Type</pb-i18n></label>
                 <select class="widget" ref="instance('place-types')/category">
                     <template>
                         <option value="{@xml:id}">{catDesc}</option>
@@ -104,7 +104,7 @@
         </fx-group>
 
         <fx-group id="note" ref="instance()" class="col-2">
-            <h2>Note</h2>
+            <h2><pb-i18n key="annotations.place.note">Note</pb-i18n></h2>
             <fx-control ref="note" as="node" update-event="blur">
                 <jinn-xml-editor unwrap="unwrap" class="widget" placeholder="[Inline text/markup or sequence of paragraphs]" schema="resources/scripts/annotations/tei.json" schema-root="note" namespace="http://www.tei-c.org/ns/1.0">
                     <div slot="toolbar">
@@ -124,7 +124,7 @@
 
         <!-- begin section name variants -->
         <fx-group>
-            <header>Name variants ({count(//placeName[@type='variant'])})
+            <header><pb-i18n key="annotations.place.name-variants">Name variants</pb-i18n> ({count(//placeName[@type='variant'])})
                 <fx-trigger class="add-button">
                     <paper-icon-button icon="icons:add" data-i18n="[title]annotations.add.roles"/>
                     <fx-insert context="//place" ref="placeName" origin="instance('i-template')//placeName[@type='variant']"/>
@@ -133,7 +133,7 @@
             <fx-repeat id="r-nameVariant" ref="//placeName[@type='variant']" class="two-col">
                 <template>
                     <fx-control ref=".">
-                        <label>Name</label>
+                        <label><pb-i18n key="annotations.place.name">Name</pb-i18n></label>
                         <fx-hint>Cracow</fx-hint>
                     </fx-control>
                     <fx-trigger>
@@ -145,9 +145,9 @@
         </fx-group>
         <!-- // end section name variants -->
         <fx-group>
-            <header>Location</header>
+            <header><pb-i18n key="annotations.place.location">Location</pb-i18n></header>
             <fx-control ref="//location/geo" update-event="change">
-                <label>Latitude and longitude</label>
+                <label><pb-i18n key="annotations.place.latitude-and-longitude">Latitude and longitude</pb-i18n></label>
                 <fx-hint/>
                 <fx-action event="value-changed">
                     <fx-dispatch name="geolocation" targetid="authority-editor">
@@ -156,14 +156,14 @@
                 </fx-action>
             </fx-control>
             <fx-control ref="//country">
-                <label>Country</label>
+                <label><pb-i18n key="annotations.place.country">Country</pb-i18n></label>
                 <fx-hint>Cracow</fx-hint>
             </fx-control>
             <fx-control ref="//region">
-                <label>Region</label>
+                <label><pb-i18n key="annotations.place.region">Region</pb-i18n></label>
                 <fx-hint>małopolska</fx-hint>
             </fx-control>
-            <div>Search for location or click while holding ctrl or cmd key to mark coordinates</div>
+            <div><pb-i18n key="annotations.place.location-hint">Search for location or click while holding ctrl or cmd key to mark coordinates</pb-i18n></div>
             <pb-leaflet-map id="map" zoom="11" fit-markers="" geo-coding="">
                 <pb-map-layer show="" base="" label="Mapbox" url="https://{s}.tile.osm.org/{z}/{x}/{y}.png" max-zoom="19" attribution="© &lt;a href=&#34;https://osm.org/copyright&#34;&gt;OpenStreetMap&lt;/a&gt; contributors"/>
             </pb-leaflet-map>

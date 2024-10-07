@@ -36,7 +36,7 @@
                 </fx-dispatch>
             </fx-action>
             <fx-action event="submit-error">
-                <fx-message>Failed to save data - Please login</fx-message>
+                <fx-message><pb-i18n key="annotations.fore.failed-save-login">Failed to save data - Please login</pb-i18n></fx-message>
             </fx-action>
         </fx-submission>
 
@@ -61,7 +61,7 @@
     ### Use the header to give the main name of the page plus provide eventual buttons needed
     -->
     <header>
-        <h1>Quote '{instance('default')//note/cit/quote[1]/substring(., 1, 40) ! . || '...'}'</h1>
+        <h1><pb-i18n key="annotations.quote.header">Quote</pb-i18n> '{instance('default')//note/cit/quote[1]/substring(., 1, 40) ! . || '...'}'</h1>
         <div>
             <fx-trigger>
                 <paper-icon-button icon="icons:save" data-i18n="[title]annotations.save"></paper-icon-button>
@@ -82,11 +82,11 @@
     <main>
         <!-- begin section general -->
         <fx-group id="general" ref="instance()" class="col-2">
-             <h2>Quote ID:
+             <h2><pb-i18n key="annotations.quote.id">Quote ID</pb-i18n>:
                 <fx-output ref="@xml:id"></fx-output>
             </h2>
             <div>
-                <label>Typ</label>
+                <label><pb-i18n key="annotations.quote.type">Type(s)</pb-i18n></label>
                 <fx-repeat ref="app/note/cit/quote">
                     <template>
                         <span>{concat(./@type, if(./@subtype) then ': ' else '', ./@subtype)}</span>
@@ -95,11 +95,11 @@
             </div>
             
             <fx-control ref="@xml:id">
-                <label>Quote ID</label>
-                <fx-hint>jedinečný identifikátor</fx-hint>
+                <label><pb-i18n key="annotations.quote.id">Quote ID</pb-i18n></label>
+                <fx-hint><pb-i18n key="annotations.quote.id-hint">unique identifier</pb-i18n></fx-hint>
             </fx-control>
             <fx-group id="note" ref="app" class="col-2">
-            <h2>Note</h2>
+            <h2><pb-i18n key="annotations.quote.note">Note</pb-i18n></h2>
             <fx-control ref="note" as="node" update-event="blur">
                 <jinn-xml-editor unwrap="unwrap" class="widget" placeholder="[Inline text/markup or sequence of paragraphs]" schema="resources/scripts/annotations/tei.json" schema-root="note" namespace="http://www.tei-c.org/ns/1.0">
                     <div slot="toolbar">

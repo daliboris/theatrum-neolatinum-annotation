@@ -1,17 +1,84 @@
 {
     "annotate": {
-        "revision" : {
+        "revision": {
             "description": "Popis revize",
-            "user" : "Uživatel",
-            "change-summary" : "Shrnutí změn",
-            "change-summary-placeholder" : "Nepovinný stručný popis",
-            "status" : "Status",
-            "enrichment" : "Obohacení",
-            "correction" : "Oprava"    
+            "user": "Uživatel",
+            "change-summary": "Shrnutí změn",
+            "change-summary-placeholder": "Nepovinný stručný popis",
+            "status": "Status",
+            "enrichment": "Obohacení",
+            "correction": "Oprava"
         },
-        "annotation" : {
-            "details" : "Detaily anotace"
+        "annotation": {
+            "details": "Detaily anotace"
         }
-
-    }
+        
+    },
+    "annotations": {
+            "person": {
+                "header": "Osoba",
+                "id": "Idenitfikátor",
+                "id-hint": "jedinečný identifikátor",
+                "canonical-form" : "Rejstříková podoba",
+                "sex": "Pohlaví",
+                "gender": "Gender",
+                "note": "Poznámka",
+                "birth": "Narození",
+                "birth-place": "Místo narození",
+                "death": "Úmrtí",
+                "death-place": "Místo úmrtí",
+                "date-normalized" : "Normalizované datum",
+                "date-descriptive" : "Popisné datum",
+                "name-variants": "Varianty jmen",
+                "professions-and-roles": "Povolání a role",
+                "profession": "povolání"
+            },
+            "note" : {
+                "header" : "Poznámka",
+                "id" : "Idenitfikátor",
+                "id-hint" : "jedinečný identifikátor",
+                "source" : "Zdroj",
+                "source-hint" : "zdrojový dokument"
+            },
+            "gloss" : {
+                "header" : "Glosa",
+                "id" : "Idenitfikátor",
+                "id-hint" : "jedinečný identifikátor",
+                "label" : "Popisek",
+                "label-variants" : "Variantní podoby",
+                "gloss-cs" : "Glosa (česky)",
+                "gloss-en" : "Glosa (anglicky)",
+                "note" : "Poznámka",
+                "variant-form" : "Variantní podoba"
+            },
+            "quote" : {
+                "header" : "Citát",
+                "id" : "Idenitfikátor",
+                "type" : "Typ(y)",
+                "note" : "Poznámka"
+            },
+            "place" : {
+                "header" : "Místo",
+                "id" : "Idenitfikátor",
+                "id-hint" : "jedinečný identifikátor",
+                "canonical-form" : "Rejstříková podoba",
+                "sorting-form" : "Podoba pro řazení",
+                "name-variants": "Varianty jmen",
+                "name": "Jméno",
+                "type" : "Typ",
+                "note" : "Poznámka",
+                "location" : "Lokalita",
+                "latitude-and-longitude" : "Zeměpisná šířka a délka",
+                "country" : "Země",
+                "region" : "Region",
+                "location-hint" : "Vyhledejte lokalitu nebo kliknutím vyznačte koordináty (přidržte klávesu ctrl nebo cmd)"
+            },
+            "references" : {
+                "header" : "Odkazy",
+                "source" : "Zdroj"
+            },
+            "fore" : {
+                "failed-save-login" : "Ukládání selhalo. Přihlaste se."
+            }
+        }
 }

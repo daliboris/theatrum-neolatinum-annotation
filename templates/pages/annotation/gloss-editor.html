@@ -35,7 +35,7 @@
                 </fx-dispatch>
             </fx-action>
             <fx-action event="submit-error">
-                <fx-message>Failed to save data - Please login</fx-message>
+                <fx-message><pb-i18n key="annotations.fore.failed-save-login">Failed to save data - Please login</pb-i18n></fx-message>
             </fx-action>
         </fx-submission>
 
@@ -55,7 +55,7 @@
     ### Use the header to give the main name of the page plus provide eventual buttons needed
     -->
     <header>
-        <h1>Term '{instance('default')/*[1]}'</h1>
+        <h1><pb-i18n key="annotations.gloss.header">Gloss</pb-i18n> '{instance('default')/*[1]}'</h1>
         <div>
             <fx-trigger>
                 <paper-icon-button icon="icons:save" data-i18n="[title]annotations.save"></paper-icon-button>
@@ -76,20 +76,20 @@
     <main>
         <!-- begin section general -->
         <fx-group id="general" ref="instance()" class="col-2">
-             <h2>Gloss ID:
+             <h2><pb-i18n key="annotations.gloss.id">Gloss ID</pb-i18n>:
                 <fx-output ref="@xml:id"></fx-output>
             </h2>
 
             <fx-control ref="@xml:id">
-                <label>Gloss ID</label>
-                <fx-hint>jedinečný identifikátor</fx-hint>
+                <label><pb-i18n key="annotations.gloss.id">Gloss ID</pb-i18n></label>
+                <fx-hint><pb-i18n key="annotations.gloss.id-hint">unique identifier</pb-i18n></fx-hint>
             </fx-control>
             <fx-control ref="label[1]">
-                <label>Label</label>
+                <label><pb-i18n key="annotations.gloss.label">Label</pb-i18n></label>
                 <fx-hint>manna</fx-hint>
             </fx-control>
             <fx-group id="gloss-cs" ref="gloss[@xml:lang='cs']" class="col-2">
-                <h2>Gloss (CS)</h2>
+                <h2><pb-i18n key="annotations.gloss.gloss-cs">Gloss (CS)</pb-i18n></h2>
                 <fx-control ref="." as="node" update-event="blur">
                     <jinn-xml-editor unwrap="unwrap" class="widget" placeholder="[Inline text/markup or sequence of paragraphs]" schema="resources/scripts/annotations/tei.json" schema-root="gloss" namespace="http://www.tei-c.org/ns/1.0">
                         <div slot="toolbar">
@@ -103,7 +103,7 @@
                 </fx-control>
             </fx-group>
             <fx-group id="gloss-en" ref="gloss[@xml:lang='en']" class="col-2">
-                <h2>Gloss (EN)</h2>
+                <h2><pb-i18n key="annotations.gloss.gloss-en">Gloss (EN)</pb-i18n></h2>
                 <fx-control ref="." as="node" update-event="blur">
                     <jinn-xml-editor unwrap="unwrap" class="widget" placeholder="[Inline text/markup]" schema="resources/scripts/annotations/tei.json" schema-root="gloss" namespace="http://www.tei-c.org/ns/1.0">
                         <div slot="toolbar">
@@ -117,7 +117,7 @@
                 </fx-control>
             </fx-group>
             <fx-group id="note" ref="instance()" class="col-2">
-            <h2>Note</h2>
+            <h2><pb-i18n key="annotations.note.header">Note</pb-i18n></h2>
             <fx-control ref="note" as="node" update-event="blur">
                 <jinn-xml-editor unwrap="unwrap" class="widget" placeholder="[Inline text/markup]" schema="resources/scripts/annotations/tei.json" schema-root="note" namespace="http://www.tei-c.org/ns/1.0">
                     <div slot="toolbar">
@@ -138,7 +138,7 @@
         <!-- begin section name variants -->
         <fx-group>
             <header>
-                Label variants ({count(//label[@type='variant'])})
+                <pb-i18n key="annotations.gloss.label-variants">Label variants</pb-i18n> ({count(//label[@type='variant'])})
                 <fx-trigger class="add-button">
                     <paper-icon-button icon="icons:add" data-i18n="[title]annotations.add.authority"></paper-icon-button>
                     <fx-insert context="//item" ref="label" origin="instance('i-template')//label[@type='variant']"></fx-insert>
@@ -148,7 +148,7 @@
             <fx-repeat id="r-nameVariant" ref="//label[@type='variant']" class="two-col">
                 <template>
                     <fx-control ref=".">
-                        <label>Variant form</label>
+                        <label><pb-i18n key="annotations.gloss.variant-form">Variant form</pb-i18n></label>
                         <fx-hint>Beatles</fx-hint>
                     </fx-control>
 

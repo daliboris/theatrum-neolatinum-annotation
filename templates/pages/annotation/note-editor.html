@@ -38,7 +38,7 @@
                 </fx-dispatch>
             </fx-action>
             <fx-action event="submit-error">
-                <fx-message>Failed to save data - Please login</fx-message>
+                <fx-message><pb-i18n key="annotations.fore.failed-save-login">Failed to save data - Please login</pb-i18n></fx-message>
             </fx-action>
         </fx-submission>
 
@@ -64,7 +64,7 @@
     ### Use the header to give the main name of the page plus provide eventual buttons needed
     -->
     <header>
-        <h1>Note '{instance('default')//p[1]/substring(., 1, 20) ! . || '...'}'</h1>
+        <h1><pb-i18n key="annotations.note.header">Note</pb-i18n> '{instance('default')//p[1]/substring(., 1, 20) ! . || '...'}'</h1>
         <div>
             <fx-trigger>
                 <paper-icon-button icon="icons:save" data-i18n="[title]annotations.save"></paper-icon-button>
@@ -85,22 +85,22 @@
     <main>
         <!-- begin section general -->
         <fx-group id="general" ref="instance()" class="col-2">
-             <h2>Note ID:
+             <h2><pb-i18n key="annotations.note.id">Note ID</pb-i18n>:
                 <fx-output ref="@xml:id"></fx-output>
             </h2>
-            <h2>Source:
+            <h2><pb-i18n key="annotations.note.source">Source</pb-i18n>:
                 <fx-output ref="@source"></fx-output>
             </h2>
             <fx-control ref="@xml:id">
-                <label>Note ID</label>
-                <fx-hint>jedinečný identifikátor</fx-hint>
+                <label><pb-i18n key="annotations.note.id">Note ID</pb-i18n></label>
+                <fx-hint><pb-i18n key="annotations.note.id-hint">unique identifier</pb-i18n></fx-hint>
             </fx-control>
             <fx-control ref="@source">
-                <label>Source</label>
-                <fx-hint>zdrojový dokument</fx-hint>
+                <label><pb-i18n key="annotations.note.source">Source</pb-i18n></label>
+                <fx-hint><pb-i18n key="annotations.note.source-hint">source document</pb-i18n></fx-hint>
             </fx-control>
             <fx-group id="note" ref="note" class="col-2">
-            <h2>Note</h2>
+            <h2><pb-i18n key="annotations.note.header">Note</pb-i18n></h2>
             <fx-control ref="." as="node" update-event="blur">
                 <jinn-xml-editor unwrap="unwrap" class="widget" placeholder="[Inline text/markup or sequence of paragraphs]" schema="resources/scripts/annotations/tei.json" schema-root="note" namespace="http://www.tei-c.org/ns/1.0">
                     <div slot="toolbar">
