@@ -34,7 +34,7 @@
                 </fx-dispatch>
             </fx-action>
             <fx-action event="submit-error">
-                <fx-message>Failed to save data - Please login</fx-message>
+                <fx-message><pb-i18n key="annotations.fore.failed-save-login">Failed to save data - Please login</pb-i18n></fx-message>
             </fx-action>
         </fx-submission>
 
@@ -54,7 +54,7 @@
     ### Use the header to give the main name of the page plus provide eventual buttons needed
     -->
     <header>
-        <h1>Person '{instance('default')/*[1][@type='main']}'</h1>
+        <h1><pb-i18n key="annotations.person.header">Person</pb-i18n> '{instance('default')/*[1][@type='main']}'</h1>
         <div>
             <fx-trigger>
                 <paper-icon-button icon="icons:save" data-i18n="[title]annotations.save"/>
@@ -75,13 +75,13 @@
     <main>
         <!-- begin section general -->
         <fx-group id="general" ref="instance()" class="col-2">
-            <h2>Person ID:
+            <h2><pb-i18n key="annotations.person.id">Person ID</pb-i18n>:
                 <fx-output ref="@xml:id"/>
             </h2>
 
             <fx-control ref="@xml:id">
-                <label>Person ID</label>
-                <fx-hint>unique identifier</fx-hint>
+                <label><pb-i18n key="annotations.person.id">Person ID</pb-i18n></label>
+                <fx-hint><pb-i18n key="annotations.person.id-hint">unique identifier</pb-i18n>unique identifier</fx-hint>
             </fx-control>
             <fx-group id="pers-name" ref="persName[@type='main']">
                 <fieldset>
@@ -120,7 +120,7 @@
             
              
             <fx-control ref="@sex">
-                <label>Sex</label>
+                <label><pb-i18n key="annotations.person.sex">Sex</pb-i18n></label>
                 <select class="widget">
                     <option value="MALE">MALE</option>
                     <option value="FEMALE">FEMALE</option>
@@ -129,7 +129,7 @@
                 <fx-hint>MALE, FEMALE or UNKNOWN</fx-hint>
             </fx-control>
             <fx-control ref="gender/@value">
-                <label>Gender</label>
+                <label><pb-i18n key="annotations.person.gender">Gender</pb-i18n></label>
                 <select class="widget">
                     <option value="M">Male</option>
                     <option value="F">Female</option>
@@ -137,12 +137,13 @@
                 </select>
                 <fx-hint>M, F or U</fx-hint>
             </fx-control>
+
         </fx-group>
 
         <!-- Basic name forms -->
 
         <fx-group id="note" ref="instance()" class="col-2">
-            <h2>Note</h2>
+            <h2><pb-i18n key="annotations.person.note">Note</pb-i18n></h2>
             <fx-control ref="note[@type='bio']" as="node" update-event="blur">
                 <jinn-xml-editor unwrap="unwrap" class="widget" placeholder="[Inline text/markup or sequence of paragraphs]" schema="resources/scripts/annotations/tei.json" schema-root="note" namespace="http://www.tei-c.org/ns/1.0">
                     <div slot="toolbar">
@@ -161,33 +162,33 @@
         </fx-group>
 
         <fx-group id="birth" ref="//person/birth" class="col-2">
-            <h2>Birth</h2>
+            <h2><pb-i18n key="annotations.person.birth">Birth</pb-i18n></h2>
             <fx-control ref="date/@when">
-                <label>Date normalized (YYYY-MM-DD)</label>
+                <label><pb-i18n key="annotations.person.date-normalized">Date normalized</pb-i18n> (YYYY-MM-DD)</label>
                 <fx-hint>YYYY-MM-DD</fx-hint>
             </fx-control>
             <fx-control ref="date">
-                <label>Date descriptive</label>
+                <label><pb-i18n key="annotations.person.date-descriptive">Date descriptive</pb-i18n></label>
                 <fx-hint>1786-03-22</fx-hint>
             </fx-control>
             <fx-control ref="placeName">
-                <label>Place of birth</label>
+                <label><pb-i18n key="annotations.person.birth-place">Place of birth</pb-i18n></label>
                 <fx-hint>Warsaw</fx-hint>
             </fx-control>
         </fx-group>
 
         <fx-group id="birth" ref="//person/death" class="col-2">
-            <h2>Death</h2>
+            <h2><pb-i18n key="annotations.person.death">Death</pb-i18n></h2>
             <fx-control ref="date/@when">
-                <label>Date normalized (YYYY-MM-DD)</label>
+                <label><pb-i18n key="annotations.person.date-normalized">Date normalized</pb-i18n> (YYYY-MM-DD)</label>
                 <fx-hint>YYYY-MM-DD</fx-hint>
             </fx-control>
             <fx-control ref="date">
-                <label>Date descriptive</label>
+                <label><pb-i18n key="annotations.person.date-descriptive">Date descriptive</pb-i18n></label>
                 <fx-hint>1786-03-22</fx-hint>
             </fx-control>
             <fx-control ref="placeName">
-                <label>Place of death</label>
+                <label><pb-i18n key="annotations.person.death-place">Place of death</pb-i18n></label>
                 <fx-hint>Warsaw</fx-hint>
             </fx-control>
         </fx-group>
@@ -197,7 +198,7 @@
         <!-- begin section name variants -->
         <fx-group>
             <header>
-                Name variants ({count(//persName[@type='variant'])})
+                <pb-i18n key="annotations.person.name-variants">Name variants</pb-i18n> ({count(//persName[@type='variant'])})
                 <fx-trigger class="add-button">
                     <!--                        <button>add</button>-->
                     <paper-icon-button icon="icons:add" data-i18n="[title]annotations.add.authority"/>
@@ -233,7 +234,8 @@
         <!-- begin section professions -->
         <fx-group>
             <header>
-                Professions and roles ({count(//occupation)})
+                <pb-i18n key="annotations.person.professions-and-roles">Professions and roles</pb-i18n>
+                 ({count(//occupation)})
                 <fx-trigger class="add-button">
                     <paper-icon-button icon="icons:add" data-i18n="[title]annotations.add.roles"/>
                     <fx-insert context="//person" ref="name" origin="instance('i-template')//occupation"/>
@@ -243,7 +245,7 @@
             <fx-repeat id="r-occupation" ref="//occupation" class="two-col">
                 <template>
                     <fx-control ref=".">
-                        <label>Profession</label>
+                        <label><pb-i18n key="annotations.person.profession">Profession</pb-i18n></label>
                         <fx-hint>teacher</fx-hint>
                     </fx-control>
                     <fx-trigger>
@@ -254,6 +256,38 @@
             </fx-repeat>
         </fx-group>
 
+        <!-- begin section professions -->
+        <fx-group>
+            <header>
+                <pb-i18n key="annotations.references.header">References</pb-i18n> ({count(//idno)})
+                <fx-trigger class="add-button">
+                    <paper-icon-button icon="icons:add" data-i18n="[title]annotations.add.roles"/>
+                    <fx-insert context="//idno" ref="name" origin="instance('i-template')//idno"/>
+                </fx-trigger>
+            </header>
+
+            <fx-repeat id="r-occupation" ref="//idno" class="two-col">
+                <template>
+                    <fx-control ref="@type">
+                        <label><pb-i18n key="annotations.references.source">Zdroj</pb-i18n></label>
+                        <select class="widget">
+                            <option value="GND">GND</option>
+                            <option value="WIKI">Wikidata</option>
+                            <option value="BBDR">BBDR</option>
+                        </select>
+                        <fx-hint>Wikidata</fx-hint>
+                    </fx-control>
+                    <legend><pb-i18n key="annotations.person.url">URL</pb-i18n></legend>
+                    <fx-control ref=".">
+                        <fx-hint>https://d-nb.info/gnd/4079167-1</fx-hint>
+                    </fx-control>
+                    <fx-trigger>
+                        <paper-icon-button icon="close" data-i18n="[title]annotations.authority" title="delete"/>
+                        <fx-delete ref="."/>
+                    </fx-trigger>
+                </template>
+            </fx-repeat>
+        </fx-group>
     </main>
     <fx-trigger>
         <paper-icon-button icon="icons:save" data-i18n="[title]annotations.save"/>
