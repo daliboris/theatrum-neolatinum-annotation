@@ -128,13 +128,28 @@
                             <param name="content" value="(persName[@type=&#34;main&#34;], text {concat(' (', @sex, ')')})"/>
                             <param name="level" value="3"/>
                         </model>
+                        <model predicate="birth and death" behaviour="block">
+                            <param name="content" value="string-join((birth/date/@when, death/date/@when), ' – ')"/>
+                        </model>
                         <model behaviour="block">
                             <param name="content" value="string-join(occupation, ', ')"/>
+                        </model>
+                        <model behaviour="list">
+                            <param name="content" value="idno" />
                         </model>
                         <model behaviour="paragraph">
                             <param name="content" value="./note/node()"/>
                         </model>
                     </modelSequence>
+                </elementSpec>
+                <elementSpec ident="idno" mode="add">
+                    <model predicate="$parameters?mode='register-entry'" behaviour="link">
+                        <param name="uri" value="." />
+                        <param name="target" value="'_blank'" />
+                    </model>
+                    <model behaviour="listItem">
+                        <param name="content" value="." />
+                    </model>
                 </elementSpec>
                 <elementSpec ident="choice" mode="change">
                     <model predicate="sic and corr" behaviour="pass-through">
