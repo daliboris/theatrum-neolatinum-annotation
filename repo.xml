@@ -11,6 +11,14 @@
     <target>tnlanno</target>
     <permissions user="tnl" group="tei" mode="rw-rw-r--"/>
     <deployed />
+    <change version="0.5.0">
+        <ul xmlns="http://www.w3.org/1999/xhtml">
+            <li>improved gloss, quote and note processing (in the tooltip, saving)</li>
+            <li>source document for quotes and notes</li>
+            <li>styles for highlighting and delimiting quotes (relations) and notes</li>
+            <li>annotation forms UI translation</li>
+        </ul>
+    </change>
     <change version="0.4.0">
         <ul xmlns="http://www.w3.org/1999/xhtml">
             <li>separating UI, editions and register data into independent packages</li>
