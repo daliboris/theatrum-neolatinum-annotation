@@ -20,6 +20,7 @@
                 "id": "Idenitfikátor",
                 "id-hint": "jedinečný identifikátor",
                 "canonical-form" : "Rejstříková podoba",
+                "sorting-form" : "Podoba pro abecední řazení",
                 "sex": "Pohlaví",
                 "gender": "Gender",
                 "note": "Poznámka",
