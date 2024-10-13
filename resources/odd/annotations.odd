@@ -49,6 +49,14 @@
         <body>
             <schemaSpec start="TEI teiCorpus" ident="annotations" source="teipublisher.odd">
                 <elementSpec ident="persName" mode="add">
+                    <model predicate="ancestor::person[ptr/@ref]" behaviour="link">
+                        <param name="uri" value="ancestor::person/ptr[1]/@target"/>
+                        <param name="target" value="'_blank'"/>
+                    </model>
+                    <model predicate="ancestor::person[idno[@type][starts-with(., 'http')]]" behaviour="link">
+                        <param name="uri" value="ancestor::person/idno[1]/data()"/>
+                        <param name="target" value="'_blank'"/>
+                    </model>
                     <model predicate="parent::person" behaviour="inline"/>
                     <model behaviour="inline" cssClass="annotation annotation-person authority"/>
                 </elementSpec>
@@ -58,10 +66,15 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="placeName" mode="add">
-                    <model predicate="ancestor::place" behaviour="link">
-                        <param name="uri" value="ancestor::place/ptr/@target"/>
+                    <model predicate="ancestor::place[ptr/@ref]" behaviour="link">
+                        <param name="uri" value="ancestor::place/ptr[1]/@target"/>
                         <param name="target" value="'_blank'"/>
                     </model>
+                    <model predicate="ancestor::place[idno[@type][starts-with(., 'http')]]" behaviour="link">
+                        <param name="uri" value="ancestor::place/idno[1]/data()"/>
+                        <param name="target" value="'_blank'"/>
+                    </model>
+                    <model predicate="ancestor::place" behaviour="inline" />
                     <model behaviour="inline" cssClass="annotation annotation-place authority"/>
                 </elementSpec>
                 <elementSpec ident="term" mode="add">
@@ -82,6 +95,15 @@
                     </model>
                 </elementSpec>
                 <elementSpec ident="orgName" mode="add">
+                    <model predicate="ancestor::org[ptr/@ref]" behaviour="link">
+                        <param name="uri" value="ancestor::place/ptr[1]/@target"/>
+                        <param name="target" value="'_blank'"/>
+                    </model>
+                    <model predicate="ancestor::org[idno[@type][starts-with(., 'http')]]" behaviour="link">
+                        <param name="uri" value="ancestor::org/idno[1]/data()"/>
+                        <param name="target" value="'_blank'"/>
+                    </model>
+                    <model predicate="ancestor::org" behaviour="inline" />
                     <model behaviour="inline" cssClass="annotation annotation-organization authority"/>
                 </elementSpec>
                 <elementSpec ident="place" mode="add">
@@ -134,7 +156,7 @@
                         <model behaviour="block">
                             <param name="content" value="string-join(occupation, ', ')"/>
                         </model>
-                        <model behaviour="list">
+                        <model predicate="idno[@type][starts-with(., 'http')]" behaviour="list">
                             <param name="content" value="idno" />
                         </model>
                         <model behaviour="paragraph">
