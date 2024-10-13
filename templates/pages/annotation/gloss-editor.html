@@ -65,7 +65,7 @@
                 <paper-icon-button id="close-authority" icon="close" data-i18n="[title]annotations.authority">
                     <!-- ### load the authority editor for authority type -->
                 </paper-icon-button>
-                <fx-confirm message="Close this editor?">
+                <fx-confirm message="Close this editor?" data-i18n="[message]annotations.fore.close-the-editor">
                     <fx-dispatch name="hide-authority" target="#document"></fx-dispatch>
                 </fx-confirm>
             </fx-trigger>
@@ -160,6 +160,38 @@
             </fx-repeat>
         </fx-group>
 
+        <!-- begin section references -->
+        <fx-group>
+            <header>
+                <pb-i18n key="annotations.references.header">References</pb-i18n> ({count(//idno)})
+                <fx-trigger class="add-button">
+                    <paper-icon-button icon="icons:add" data-i18n="[title]annotations.add.references"/>
+                    <fx-insert context="//item" ref="idno" origin="instance('i-template')//idno"/>
+                </fx-trigger>
+            </header>
+
+            <fx-repeat id="r-occupation" ref="//idno" class="two-col">
+                <template>
+                    <fx-control ref="@type">
+                        <label><pb-i18n key="annotations.references.source">Zdroj</pb-i18n></label>
+                        <select class="widget">
+                            <option value="GND">GND</option>
+                            <option value="WIKI">Wikidata</option>
+                            <option value="BBDR">BBDR</option>
+                        </select>
+                        <fx-hint>Wikidata</fx-hint>
+                    </fx-control>
+                    <legend><pb-i18n key="annotations.person.url">URL</pb-i18n></legend>
+                    <fx-control ref=".">
+                        <fx-hint>https://d-nb.info/gnd/4079167-1</fx-hint>
+                    </fx-control>
+                    <fx-trigger>
+                        <paper-icon-button icon="close" data-i18n="[title]annotations.authority" title="delete"/>
+                        <fx-delete ref="."/>
+                    </fx-trigger>
+                </template>
+            </fx-repeat>
+        </fx-group>
     </main>
     <fx-trigger>
         <paper-icon-button icon="icons:save" data-i18n="[title]annotations.save"></paper-icon-button>

@@ -17,7 +17,8 @@
         <fx-instance id="i-template" src="api/forms/template/note-template" xpath-default-namespace="http://www.tei-c.org/ns/1.0">
             <data></data>
         </fx-instance>
-        <fx-bind ref="@xml:id" readonly="string-length(getRef()) != 0"></fx-bind>
+        <!-- <fx-bind ref="@xml:id" readonly="string-length(getRef()) != 0"></fx-bind> -->
+        <fx-bind ref="@xml:id" readonly="true()"></fx-bind> <!-- note @xml:id is automatically generated  -->
         <fx-bind ref="@source" readonly="string-length(getDocument()) != 0"></fx-bind>
 
         <fx-submission id="load" method="GET" replace="instance">
@@ -74,7 +75,7 @@
                 <paper-icon-button id="close-authority" icon="close" data-i18n="[title]annotations.authority">
                     <!-- ### load the authority editor for authority type -->
                 </paper-icon-button>
-                <fx-confirm message="Close this editor?">
+                <fx-confirm message="Close this editor?" data-i18n="[message]annotations.fore.close-the-editor">
                     <fx-dispatch name="hide-authority" target="#document"></fx-dispatch>
                 </fx-confirm>
             </fx-trigger>
@@ -91,6 +92,7 @@
             <h2><pb-i18n key="annotations.note.source">Source</pb-i18n>:
                 <fx-output ref="@source"></fx-output>
             </h2>
+            <!--
             <fx-control ref="@xml:id">
                 <label><pb-i18n key="annotations.note.id">Note ID</pb-i18n></label>
                 <fx-hint><pb-i18n key="annotations.note.id-hint">unique identifier</pb-i18n></fx-hint>
@@ -99,6 +101,7 @@
                 <label><pb-i18n key="annotations.note.source">Source</pb-i18n></label>
                 <fx-hint><pb-i18n key="annotations.note.source-hint">source document</pb-i18n></fx-hint>
             </fx-control>
+            -->
             <fx-group id="note" ref="note" class="col-2">
             <h2><pb-i18n key="annotations.note.header">Note</pb-i18n></h2>
             <fx-control ref="." as="node" update-event="blur">
