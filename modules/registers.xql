@@ -22,7 +22,7 @@ declare function rapi:entry($request as map(*)) {
 
     let $entry := collection($config:register-root)/id($id)
 
-    let $log := console:log(("rapi:entry", "&lt;lb /&gt;", $entry, " ", $type))
+    let $log := console:log(("rapi:entry ≃ ", " id: " || $id || "; entry: ", $entry, "; type: ", $type))
 
     return
       if ($id) then
