@@ -32,7 +32,18 @@
                 "date-descriptive" : "Popisné datum",
                 "name-variants": "Varianty jmen",
                 "professions-and-roles": "Povolání a role",
-                "profession": "povolání"
+                "profession": "povolání",
+                "url": "URL"
+            },
+            "organization" : {
+                "header" : "Organizace",
+                "id": "Idenitfikátor",
+                "id-hint": "jedinečný identifikátor",
+                "canonical-form" : "Rejstříková podoba",
+                "sorting-form" : "Podoba pro abecední řazení",
+                "note": "Poznámka",
+                "name-variants": "Varianty jmen",
+                "url": "URL"
             },
             "note" : {
                 "header" : "Poznámka",
@@ -78,8 +89,12 @@
                 "header" : "Odkazy",
                 "source" : "Zdroj"
             },
+            "add" : {
+                "references" : "Přidat odkaz"
+            },
             "fore" : {
-                "failed-save-login" : "Ukládání selhalo. Přihlaste se."
+                "failed-save-login" : "Ukládání selhalo. Přihlaste se.",
+                "close-the-editor" : "Chcete zavřít editor?"
             }
         }
 }

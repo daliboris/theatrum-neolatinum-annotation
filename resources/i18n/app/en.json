@@ -12,6 +12,10 @@
         "annotation" : {
             "details" : "Annotation Details"
         }
-
+    },
+    "annotations" : {
+        "add" : {
+                "references" : "Add references"
+            }
     }
 }
