@@ -64,7 +64,7 @@
     ### Use the header to give the main name of the page plus provide eventual buttons needed
     -->
     <header>
-        <h1><pb-i18n key="annotations.note.header">Note</pb-i18n> '{instance('default')//p[1]/substring(., 1, 20) ! . || '...'}'</h1>
+        <h1><pb-i18n key="annotations.note.header">Note</pb-i18n> <span class="annotations head">{instance('default')//p[1]/substring(., 1, 20) ! . || '...'}</span></h1>
         <div>
             <fx-trigger>
                 <paper-icon-button icon="icons:save" data-i18n="[title]annotations.save"></paper-icon-button>

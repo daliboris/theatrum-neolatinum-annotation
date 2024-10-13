@@ -758,3 +758,7 @@ fx-control input:read-only {
 .bibl span[class*=tei-title] {
     font-style: italic;
 }
+
+.annotations.head {
+    color: coral;
+}
