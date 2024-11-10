@@ -91,7 +91,7 @@ window.addEventListener("WebComponentsReady", () => {
 	let autoSave = false;
 	let type = "";
 	let emptyElement = false;
-	let elementPosition = "around"; //default position of the empty annotation element to be inserted; can be also "before" (for <pb/>) or "after" (for <note>)
+	let elementPosition = "around"; //default position of the annotation element to be inserted; can be also "before" (for <pb/>) or "after" (for <note>)
 	let text = "";
 	let enablePreview = true;
 	let currentEntityInfo = null;
@@ -424,7 +424,7 @@ window.addEventListener("WebComponentsReady", () => {
 			if (button.classList.contains("before")) {
 				elementPosition = "before";
 			}
-			//if class contains 'before' or 'after' value, it's empty element
+			//if class contains 'before' or 'after' value, it's an empty element
 			emptyElement = (elementPosition != "around");
 			window.pbEvents.emit("show-annotation", "transcription", {});
 			showForm(type);
@@ -503,7 +503,7 @@ window.addEventListener("WebComponentsReady", () => {
 			if (saveAll) {
 				saveOccurrences(json);
 			} else {
-				review(docs, json);
+				review(docs, json, strings, currentUser);
 			}
 		}).catch(() => window.pbEvents.emit("pb-end-update", "transcription", {}));
 	}
