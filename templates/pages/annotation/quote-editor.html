@@ -23,16 +23,16 @@
         <fx-submission id="load" method="GET" replace="instance">
             <fx-action event="submit-done">
                 <!-- setting selection we got from user as default -->
-                <fx-action if="instance()/@xml:id = 'quote-NEW'">
-                    <fx-setvalue ref="instance()//note/cit/quote[1]" value="query()"></fx-setvalue>
+                <fx-action if="instance('default')/@xml:id = 'quote-NEW'">
+                    <fx-setvalue ref="instance('default')//note/cit/quote[1]" value="query()"></fx-setvalue>
                 </fx-action>
             </fx-action>
         </fx-submission>
         <fx-submission id="save" method="PUT" replace="instance">
             <fx-action event="submit-done">
-                <fx-message>Quote saved with ID {instance()/@xml:id/string()}</fx-message>
+                <fx-message>Quote saved with ID {instance('default')/@xml:id/string()}</fx-message>
                 <fx-dispatch name="authority-created">
-                    <fx-property name="ref" expr="instance()/@xml:id/string()"></fx-property>
+                    <fx-property name="ref" expr="instance('default')/@xml:id/string()"></fx-property>
                 </fx-dispatch>
             </fx-action>
             <fx-action event="submit-error">
@@ -81,7 +81,7 @@
     <!-- ### main   -->
     <main>
         <!-- begin section general -->
-        <fx-group id="general" ref="instance()" class="col-2">
+        <fx-group id="general" ref="instance('default')" class="col-2">
              <h2><pb-i18n key="annotations.quote.id">Quote ID</pb-i18n>:
                 <fx-output ref="@xml:id"></fx-output>
             </h2>
