@@ -240,7 +240,7 @@ declare function rapi:prepare-record($node as item()*, $resp, $type) {
                                 let $subelement-name := if($child instance of element()) then local-name($child) else ()
                                 return
                                     if(empty($subelement-name)) then $child
-                                    else if($subelement-name = "note") 
+                                    else if($subelement-name = "note" and $is-new) 
                                         then functx:add-attributes($child, xs:QName('n'), $n)
                                         else $child
                             else
