@@ -41,13 +41,23 @@ span.annotation-quote[data-annotation]::before {
 }
 
 a.note-start::before {
-    content: '[' attr(data-number) ': ';
+    content: '[' attr(data-number) ':';
     color: var(--pb-annotation-note);
 }
-span.annotation-note[data-annotation]::before {
-    content: ' :' attr(data-number)']';
+span.annotation-note[data-annotation][data-number]::before {
+    content: ':' attr(data-number)']';
     color: var(--pb-annotation-note);
 }
+span.annotation-note:not([data-number])[data-annotation]::before {
+    content: '[*:';
+    font-size: .8rem;
+    color: var(--pb-annotation-note);
+}
+span.annotation-note:not([data-number])[data-annotation]::after {
+    content: ':*]' attr(data-type);
+}
+
+
 /*
 .annotation-person {
     border-bottom-width: 1px;
