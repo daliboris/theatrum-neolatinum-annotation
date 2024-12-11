@@ -228,13 +228,14 @@ fx-fore textarea {
     position: fixed;
     left: -0.5rem;
     bottom: 0;
-    height: 25vh;
+    /* height: 25vh; */
     z-index: 10;
     background: white;
     margin-bottom: 0;
     box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.4);
     width: 100%;
 }
+/*
 #markupPanel.side{
     visibility: visible;
 }
@@ -245,14 +246,20 @@ fx-fore textarea {
 #markupPanel.side paper-tabs{
     height: 100%;
 }
+*/
 fx-group[ref="authority"]{
     overflow: hidden;
 }
+fx-fore #markupPanel pb-tabs,
+fx-fore #markupPanel .preview-toolbar {
+    height: 25vh;
+}
+/*
 fx-fore #markupPanel section,
 fx-fore #markupPanel pb-tabs{
     height: 100%;
 }
-
+*/
 pb-page {
     height: 100vh;
     display: grid;
@@ -450,7 +457,8 @@ paper-icon-button[data-type="edit"] {
 
 [nonrelevant]{
     visibility:hidden;
-    display:none;
+    /* display:none; */
+    display:block;
 }
 
 #commit[nonrelevant] {
