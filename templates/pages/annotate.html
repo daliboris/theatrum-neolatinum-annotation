@@ -156,7 +156,10 @@
                         <iron-form id="edit-form">
                             <form action="">
                                 <div class="annotation-form person organization place term gloss quote note">
+                                    <!-- TODO  -->
+                                    <!-- <pb-autocomplete placeholder="Query" name="query" source="api/search/autocomplete"></pb-autocomplete> -->
                                     <paper-input class="form-ref" name="ref" data-i18n="[label]annotations.reference" label="Reference"/>
+                                    <!-- <paper-input class="form-n" name="n" data-i18n="[label]annotations.note-number" label="Note number"/> -->
                                     <div class="authority-info"><pb-i18n key="dialogs.loading">Loading ...</pb-i18n></div>
                                     <pb-restricted group="tei">
                                         <paper-icon-button icon="editor:mode-edit" id="edit-entity" data-i18n="[title]annotations.edit-entity"/>
@@ -298,6 +301,7 @@
                     </fx-load>
                     <!-- reset -->
                     <fx-setvalue ref="ref"/>
+                    <fx-setvalue ref="n"/>
                     <fx-update/>
                     <fx-refresh/>
                 </fx-action>
